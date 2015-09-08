@@ -47,7 +47,7 @@ public class RepositoryTextReader implements Runnable {
 				
 				Packet packet = getRepository().take();
 				
-				LOG.info("LENDO==" + packet.getCounter() + " - Conteudo: " + packet.getContent() + " - Tamanho: " + packet.getContent().length );
+				LOG.info("LENDO==" + packet.getCounter() + " - Conteudo: " + new String(packet.getContent()) + " - Tamanho: " + packet.getContent().length );
 				
 			} catch (InterruptedException e) {
 				LOG.fatal("Erro na leitura no repositorio!", e);

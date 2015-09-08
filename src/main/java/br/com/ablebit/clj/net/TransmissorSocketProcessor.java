@@ -109,7 +109,7 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 			InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : getNetworkInterface().getInetAddresses().nextElement());
 			getSocket().bind(new InetSocketAddress(inetAddress, getLocalPort()));
 	
-			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), getLocalPort());
+			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), 5000);
 			
 			this.socketOut = new ObjectOutputStream(getSocket().getOutputStream());
 			
