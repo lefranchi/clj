@@ -15,7 +15,7 @@ import br.com.ablebit.clj.config.Configuration;
 import br.com.ablebit.clj.config.ConfigurationProperty;
 import br.com.ablebit.clj.data.Repository;
 import br.com.ablebit.clj.data.impl.BufferedRepository;
-import br.com.ablebit.clj.data.reader.TextReader;
+import br.com.ablebit.clj.data.reader.RepositoryTextReader;
 import br.com.ablebit.clj.net.Packet;
 import br.com.ablebit.clj.net.ReceptorSocketProcessor;
 import br.com.ablebit.clj.thread.NamedThreadFactory;
@@ -89,7 +89,6 @@ public class Receptor {
 			System.exit(-1);
 		}
 
-		// TODO: Colocar em arquivo de configuração.
 		Integer bufferSize = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_BUFFER_SIZE));
 		Integer repositoryDelay = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_DELAY));
 		Repository<Packet> repository = new BufferedRepository<>(bufferSize, repositoryDelay);
@@ -98,12 +97,11 @@ public class Receptor {
 		/* Instancia executor para processos de leitura de repositorio */
 		executorService = Executors.newSingleThreadExecutor();
 
-		executorService.execute(new TextReader(repository));
+		executorService.execute(new RepositoryTextReader(repository));
 		LOG.info("Instanciado Leitor de repositório!");
 
 		// setServerSocket(new ServerSocket(getLocalPort(), 100,
 		// getNetworkInterface().getNetworkInterface().getInetAddresses().nextElement()));
-		// TODO: Colocar em arquivo de configuração.
 		try {
 			int port = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_PORT));
 			serverSocket = new ServerSocket(port);
@@ -113,7 +111,7 @@ public class Receptor {
 			System.exit(-1);
 		}
 
-		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("able-socket-receptor-socket"));
+		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("cl-receptor-socket"));
 
 		LOG.info("Escutando...");
 

@@ -11,12 +11,12 @@ import br.com.ablebit.clj.net.Packet;
  * @author leandro.franchi
  *
  */
-public class TextReader implements Runnable {
+public class RepositoryTextReader implements Runnable {
 
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOG = Logger.getLogger(TextReader.class);
+	private static final Logger LOG = Logger.getLogger(RepositoryTextReader.class);
 
 	
 	/**
@@ -30,7 +30,7 @@ public class TextReader implements Runnable {
 	 * @param repository
 	 * 
 	 */
-	public TextReader(Repository<Packet> repository) {
+	public RepositoryTextReader(Repository<Packet> repository) {
 		this.setRepository(repository);
 	}
 	
