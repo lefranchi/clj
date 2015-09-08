@@ -102,9 +102,11 @@ public class Transmissor {
 		
 		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("cl-transmissor-socket"));
 		
+		int localPort = ++remoteReceptorPort;
+		
 		for(NetworkInterface networkInterface : interfaces) {
 			
-			TransmissorSocketProcessor socketProcessor = new TransmissorSocketProcessor(repository, networkInterface, remoteReceptorIp, remoteReceptorPort);
+			TransmissorSocketProcessor socketProcessor = new TransmissorSocketProcessor(repository, networkInterface, localPort++, remoteReceptorIp, remoteReceptorPort);
 			
 			socketFutures.add(socketExecutorService.submit(socketProcessor));
 		

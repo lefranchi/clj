@@ -31,6 +31,11 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	private Repository<Packet> repository;
 	
 	/**
+	 * Porta Local.
+	 */
+	private int localPort;
+	
+	/**
 	 * Ip remoto.
 	 */
 	private String remoteReceptorIp;
@@ -60,9 +65,10 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	/**
 	 *  Construtor Padrao.
 	 */
-	public TransmissorSocketProcessor(Repository<Packet> repository, NetworkInterface networkInterface, String remoteReceptorIp, int remoteReceptorPort) {
+	public TransmissorSocketProcessor(Repository<Packet> repository, NetworkInterface networkInterface, int localPort, String remoteReceptorIp, int remoteReceptorPort) {
 		this.repository = repository;
 		this.networkInterface = networkInterface;
+		this.localPort = localPort;
 		this.remoteReceptorIp = remoteReceptorIp;
 		this.remoteReceptorPort = remoteReceptorPort;
 	}
@@ -101,9 +107,9 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 			getSocket().setKeepAlive(true);
 
 			InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : getNetworkInterface().getInetAddresses().nextElement());
-			getSocket().bind(new InetSocketAddress(inetAddress, 5001)); //TODO: Verificar necessidade de configuração
+			getSocket().bind(new InetSocketAddress(inetAddress, getLocalPort()));
 	
-			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), 5001);
+			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), getLocalPort());
 			
 			this.socketOut = new ObjectOutputStream(getSocket().getOutputStream());
 			
@@ -134,7 +140,7 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	 */
 	@Override
 	public String toString() {
-		return getNetworkInterface().getName() + ":" + 5000 + " -> " + remoteReceptorIp + ":" + remoteReceptorPort;
+		return getNetworkInterface().getName() + ":" + getLocalPort() + " -> " + remoteReceptorIp + ":" + remoteReceptorPort;
 	}
 
 
@@ -184,6 +190,14 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 
 	public void setRepository(Repository<Packet> repository) {
 		this.repository = repository;
+	}
+
+	public int getLocalPort() {
+		return localPort;
+	}
+
+	public void setLocalPort(int localPort) {
+		this.localPort = localPort;
 	}
 
 }
