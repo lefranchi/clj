@@ -11,6 +11,8 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
+import br.com.ablebit.clj.config.Configuration;
+import br.com.ablebit.clj.config.ConfigurationProperty;
 import br.com.ablebit.clj.data.Repository;
 import br.com.ablebit.clj.data.impl.BufferedRepository;
 import br.com.ablebit.clj.data.reader.TextReader;
@@ -78,12 +80,18 @@ public class Receptor {
 			}
 		});
 
-		// TODO: CLConfiguration configuration = new CLConfiguration();
-		// LOG.info("Configuracoes do clstreaming carregadas!");
+		Configuration configuration = new Configuration("clj.properties");
+		try {
+			configuration.load();
+			LOG.info("Configuracoes do clj carregadas!");
+		} catch(IOException e) {
+			LOG.fatal("Problemas ao carregar arquivo de configurações.", e);
+			System.exit(-1);
+		}
 
 		// TODO: Colocar em arquivo de configuração.
-		Integer bufferSize = new Integer(50);
-		Integer repositoryDelay = new Integer(10);
+		Integer bufferSize = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_BUFFER_SIZE));
+		Integer repositoryDelay = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_DELAY));
 		Repository<Packet> repository = new BufferedRepository<>(bufferSize, repositoryDelay);
 		LOG.info("Criado repositorio para recepcao[bufferSize:" + bufferSize + ", repositoryDelay:" + repositoryDelay);
 
@@ -97,7 +105,8 @@ public class Receptor {
 		// getNetworkInterface().getNetworkInterface().getInetAddresses().nextElement()));
 		// TODO: Colocar em arquivo de configuração.
 		try {
-			serverSocket = new ServerSocket(5000);
+			int port = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_PORT));
+			serverSocket = new ServerSocket(port);
 			LOG.info("ServerSocket Conectado!");
 		} catch (Exception e) {
 			LOG.fatal("Erro na inicialização do socket na porta 5000");
