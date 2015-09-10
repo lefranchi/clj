@@ -45,9 +45,11 @@ public class NetworkUtil {
 		return interfaces;
 	}
 	
-	public static InetAddress getIpv4Address(NetworkInterface networkInterface) throws SocketException {
+	public static List<InetAddress> listInetAddress() throws SocketException {
 		
-		Enumeration<NetworkInterface> ifaces = networkInterface.getNetworkInterfaces();
+		List<InetAddress> inetAddresses = new ArrayList<>();
+
+		Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
 		
 		while(ifaces.hasMoreElements()) {
 			
@@ -58,17 +60,14 @@ public class NetworkUtil {
 				
 				InetAddress addr = addresses.nextElement();
 				if(addr instanceof Inet4Address && !addr.isLoopbackAddress())
-					return addr;
+					inetAddresses.add(addr);
 				
 			}
 			
-		}
-
-		return null;
-		
-	}
-
-
+		}		
+		return inetAddresses;
+	}	
+	
 	/**
 	 * Imprime informações da Interface.
 	 * 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.NetworkInterface;
 import java.net.Socket;
 import java.util.concurrent.Callable;
 
@@ -50,7 +49,7 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	 * 
 	 * @return
 	 */
-	private NetworkInterface networkInterface;
+	private InetAddress inetAddress;
 
 	/**
 	 * Socket.
@@ -65,9 +64,9 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	/**
 	 *  Construtor Padrao.
 	 */
-	public TransmissorSocketProcessor(Repository<Packet> repository, NetworkInterface networkInterface, int localPort, String remoteReceptorIp, int remoteReceptorPort) {
+	public TransmissorSocketProcessor(Repository<Packet> repository, InetAddress inetAddress, int localPort, String remoteReceptorIp, int remoteReceptorPort) {
 		this.repository = repository;
-		this.networkInterface = networkInterface;
+		this.inetAddress = inetAddress;
 		this.localPort = localPort;
 		this.remoteReceptorIp = remoteReceptorIp;
 		this.remoteReceptorPort = remoteReceptorPort;
@@ -106,8 +105,8 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 			getSocket().setReuseAddress(true);
 			getSocket().setKeepAlive(true);
 
-			InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : NetworkUtil.getIpv4Address(getNetworkInterface()));
-			getSocket().bind(new InetSocketAddress(inetAddress, getLocalPort()));
+			//InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : NetworkUtil.getIpv4Address(getNetworkInterface()));
+			getSocket().bind(new InetSocketAddress(getInetAddress(), getLocalPort()));
 	
 			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), 5000);
 			
@@ -140,7 +139,7 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	 */
 	@Override
 	public String toString() {
-		return getNetworkInterface().getName() + ":" + getLocalPort() + " -> " + remoteReceptorIp + ":" + remoteReceptorPort;
+		return getInetAddress() + ":" + getLocalPort() + " -> " + remoteReceptorIp + ":" + remoteReceptorPort;
 	}
 
 
@@ -158,14 +157,6 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 
 	public void setRemoteReceptorPort(int remoteReceptorPort) {
 		this.remoteReceptorPort = remoteReceptorPort;
-	}
-
-	public NetworkInterface getNetworkInterface() {
-		return networkInterface;
-	}
-
-	public void setNetworkInterface(NetworkInterface networkInterface) {
-		this.networkInterface = networkInterface;
 	}
 
 	public Socket getSocket() {
@@ -198,6 +189,14 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
+	}
+
+	public InetAddress getInetAddress() {
+		return inetAddress;
+	}
+
+	public void setInetAddress(InetAddress inetAddress) {
+		this.inetAddress = inetAddress;
 	}
 
 }
