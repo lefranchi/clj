@@ -1,7 +1,7 @@
 package br.com.ablebit.clj;
 
 import java.io.IOException;
-import java.net.NetworkInterface;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -91,9 +91,9 @@ public class Transmissor {
 		String remoteReceptorIp = configuration.getConfiguration(ConfigurationProperty.REMOTE_RECEPTOR_IP);
 		int remoteReceptorPort = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.REMOTE_RECEPTOR_PORT));
 		
-		List<NetworkInterface> interfaces = null;
+		List<InetAddress> addresses = null;
 		try {
-			interfaces = NetworkUtil.listInterfaces();
+			addresses = NetworkUtil.listInetAddress();
 		} catch(Exception e) {
 			LOG.fatal("Erro no carregamento das interfaces.", e);
 			System.exit(-1);
@@ -104,9 +104,9 @@ public class Transmissor {
 		
 		int localPort = remoteReceptorPort+1;
 		
-		for(NetworkInterface networkInterface : interfaces) {
+		for(InetAddress address : addresses) {
 			
-			TransmissorSocketProcessor socketProcessor = new TransmissorSocketProcessor(repository, networkInterface, localPort++, remoteReceptorIp, remoteReceptorPort);
+			TransmissorSocketProcessor socketProcessor = new TransmissorSocketProcessor(repository, address, localPort++, remoteReceptorIp, remoteReceptorPort);
 			
 			socketFutures.add(socketExecutorService.submit(socketProcessor));
 		
