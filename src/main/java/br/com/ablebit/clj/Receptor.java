@@ -1,6 +1,7 @@
 package br.com.ablebit.clj;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -103,8 +104,9 @@ public class Receptor {
 		// setServerSocket(new ServerSocket(getLocalPort(), 100,
 		// getNetworkInterface().getNetworkInterface().getInetAddresses().nextElement()));
 		try {
+			String receptorIp = configuration.getConfiguration(ConfigurationProperty.RECEPTOR_IP);
 			int port = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_PORT));
-			serverSocket = new ServerSocket(port);
+			serverSocket = new ServerSocket(port, 100, InetAddress.getByName(receptorIp));
 			LOG.info("ServerSocket Conectado!");
 		} catch (Exception e) {
 			LOG.fatal("Erro na inicialização do socket na porta 5000");
