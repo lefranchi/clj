@@ -1,5 +1,6 @@
 package br.com.ablebit.clj.net;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -43,6 +44,30 @@ public class NetworkUtil {
 		
 		return interfaces;
 	}
+	
+	public static InetAddress getIpv4Address(NetworkInterface networkInterface) throws SocketException {
+		
+		Enumeration<NetworkInterface> ifaces = networkInterface.getNetworkInterfaces();
+		
+		while(ifaces.hasMoreElements()) {
+			
+			NetworkInterface iface = ifaces.nextElement();
+			Enumeration<InetAddress> addresses = iface.getInetAddresses();
+		
+			while(addresses.hasMoreElements()) {
+				
+				InetAddress addr = addresses.nextElement();
+				if(addr instanceof Inet4Address && !addr.isLoopbackAddress())
+					return addr;
+				
+			}
+			
+		}
+
+		return null;
+		
+	}
+
 
 	/**
 	 * Imprime informações da Interface.

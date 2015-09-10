@@ -106,7 +106,7 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 			getSocket().setReuseAddress(true);
 			getSocket().setKeepAlive(true);
 
-			InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : getNetworkInterface().getInetAddresses().nextElement());
+			InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : NetworkUtil.getIpv4Address(getNetworkInterface()));
 			getSocket().bind(new InetSocketAddress(inetAddress, getLocalPort()));
 	
 			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), 5000);
