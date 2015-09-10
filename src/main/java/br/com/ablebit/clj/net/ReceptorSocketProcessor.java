@@ -59,6 +59,7 @@ public class ReceptorSocketProcessor implements Callable<Boolean> {
 		while(!Thread.interrupted()) {
 
 			Packet packet = (Packet) objectInputStream.readObject();
+			packet.setSource(socket.getRemoteSocketAddress().toString());
 			
 			getRepository().put(packet);
 			

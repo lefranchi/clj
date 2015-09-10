@@ -24,6 +24,11 @@ public class Packet implements Serializable, Comparable<Packet> {
 	private byte[] content;
 	
 	/**
+	 * De onde veio o pacote.
+	 */
+	private String source;
+	
+	/**
 	 * Construtor.
 	 * 
 	 * @param protocolCommand
@@ -52,6 +57,7 @@ public class Packet implements Serializable, Comparable<Packet> {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(":counter:").append(this.counter);
+		sb.append(":source:").append(this.source);
 		sb.append(":content:").append(Arrays.toString(this.content));
 		sb.append("-").append(super.toString());
 		return sb.toString();
@@ -68,6 +74,14 @@ public class Packet implements Serializable, Comparable<Packet> {
 	}
 	public void setContent(byte[] content) {
 		this.content = content;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 
 }
