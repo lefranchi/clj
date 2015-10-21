@@ -58,29 +58,6 @@ public class Receptor {
 
 		LOG.info("Inicializando Receptor...");
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				
-				LOG.info("Finalizando Receptor...");
-				
-				try {
-				
-					serverSocket.close();
-					socketExecutorService.shutdown();
-					executorService.shutdown();
-					
-				} catch(Exception e) {
-					LOG.error("Erro na finalização do Receptor.", e);
-				}
-				
-				LOG.info("Receptor Finalizado!");
-				
-				System.exit(0);
-				
-			}
-		});
-
 		Configuration configuration = new Configuration("clj.properties");
 		try {
 			configuration.load();
@@ -116,6 +93,29 @@ public class Receptor {
 		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("cl-receptor-socket"));
 
 		LOG.info("Escutando...");
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				
+				LOG.info("Finalizando Receptor...");
+				
+				try {
+				
+					serverSocket.close();
+					socketExecutorService.shutdown();
+					executorService.shutdown();
+					
+				} catch(Exception e) {
+					LOG.error("Erro na finalização do Receptor.", e);
+				}
+				
+				LOG.info("Receptor Finalizado!");
+				
+				System.exit(0);
+				
+			}
+		});
 
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
