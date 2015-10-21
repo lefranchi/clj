@@ -1,5 +1,7 @@
 #! /bin/sh
 
+mvn clean install -Denvironment=production
+
 echo "Removendo Diretorio CLJ..."
 rm -rf /opt/ablebit/clj
 
@@ -7,7 +9,7 @@ echo "Criando Diretorio CLJ..."
 mkdir -p /opt/ablebit/clj
 
 echo "Copiando Diretorio CLJ..."
-cp -r ../target/clj/jsw/* /opt/ablebit/clj/
+cp -r target/clj/jsw/* /opt/ablebit/clj/
 
 echo "====================================================================="
 echo "Configurando Receptor"
@@ -17,8 +19,8 @@ echo "Criando diretório de Logs..."
 mkdir -p /opt/ablebit/clj/receptor/logs/
 
 echo "Copiando Arquivos de Configuracoes..."
-cp ../src/main/resources/clj.properties /opt/ablebit/clj/receptor/conf/
-cp ../src/main/resources/log4j.xml /opt/ablebit/clj/receptor/conf/
+cp src/main/resources/clj.properties /opt/ablebit/clj/receptor/conf/
+cp src/main/resources/log4j.xml /opt/ablebit/clj/receptor/conf/
 
 echo "Setando Permissoes..."
 chmod +x /opt/ablebit/clj/receptor/bin/receptor
@@ -32,8 +34,8 @@ echo "Criando diretório de Logs..."
 mkdir -p /opt/ablebit/clj/transmissor/logs/
 
 echo "Copiando Arquivos de Configuracoes..."
-cp ../src/main/resources/clj.properties /opt/ablebit/clj/transmissor/conf/
-cp ../src/main/resources/log4j.xml /opt/ablebit/clj/transmissor/conf/
+cp src/main/resources/clj.properties /opt/ablebit/clj/transmissor/conf/
+cp src/main/resources/log4j.xml /opt/ablebit/clj/transmissor/conf/
 
 echo "Setando Permissoes..."
 chmod +x /opt/ablebit/clj/transmissor/bin/transmissor
