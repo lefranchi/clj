@@ -97,6 +97,14 @@
 											</configuration>
 										</generatorConfiguration>
 									</generatorConfigurations>
+									<jvmSettings>
+										<extraArguments>
+											<extraArgument>-server</extraArgument>
+											<extraArgument>-Xdebug</extraArgument>
+											<extraArgument>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044</extraArgument>
+											<extraArgument>-Djava.net.preferIPv4Stack=true</extraArgument>
+										</extraArguments>
+									</jvmSettings>
 								</daemon>
 								<daemon>
 									<id>receptor</id>
@@ -129,6 +137,14 @@
 											</configuration>
 										</generatorConfiguration>
 									</generatorConfigurations>
+									<jvmSettings>
+										<extraArguments>
+											<extraArgument>-server</extraArgument>
+											<extraArgument>-Xdebug</extraArgument>
+											<extraArgument>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044</extraArgument>
+											<extraArgument>-Djava.net.preferIPv4Stack=true</extraArgument>
+										</extraArguments>
+									</jvmSettings>
 								</daemon>
 							</daemons>
 						</configuration>

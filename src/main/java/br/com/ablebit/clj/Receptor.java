@@ -86,7 +86,7 @@ public class Receptor {
 			serverSocket = new ServerSocket(port, 100, Inet4Address.getByName(receptorIp));
 			LOG.info("ServerSocket Conectado!");
 		} catch (Exception e) {
-			LOG.fatal("Erro na inicialização do socket na porta 5000");
+			LOG.fatal("Erro na inicialização do socket na porta 5000.", e);
 			System.exit(-1);
 		}
 
