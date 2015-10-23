@@ -58,7 +58,8 @@ public class Packet implements Serializable, Comparable<Packet> {
 		StringBuffer sb = new StringBuffer();
 		sb.append(":counter:").append(this.counter);
 		sb.append(":source:").append(this.source);
-		sb.append(":content:").append(Arrays.toString(this.content));
+		sb.append(":content:").append(new String(this.content));
+		sb.append(":raw:").append(Arrays.toString(this.content));
 		sb.append("-").append(super.toString());
 		return sb.toString();
 	}
