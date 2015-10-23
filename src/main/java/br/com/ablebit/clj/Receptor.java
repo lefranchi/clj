@@ -110,6 +110,8 @@ public class Receptor {
 					LOG.error("Erro na finalização do Receptor.", e);
 				}
 				
+				interrupt();
+				
 				LOG.info("Receptor Finalizado!");
 				
 				System.exit(0);
