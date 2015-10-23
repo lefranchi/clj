@@ -54,8 +54,8 @@ public class Transmissor {
 				
 				try {
 				
-					socketExecutorService.shutdown();
-					executorService.shutdown();
+					socketExecutorService.shutdownNow();
+					executorService.shutdownNow();
 					
 				} catch(Exception e) {
 					LOG.error("Erro na finalização do Transmissor.", e);

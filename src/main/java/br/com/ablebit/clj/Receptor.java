@@ -61,8 +61,8 @@ public class Receptor {
 				try {
 				
 					serverSocket.close();
-					socketExecutorService.shutdown();
-					executorService.shutdown();
+					socketExecutorService.shutdownNow();
+					executorService.shutdownNow();
 					
 				} catch(Exception e) {
 					LOG.error("Erro na finalização do Receptor.", e);
@@ -88,14 +88,12 @@ public class Receptor {
 		Repository<Packet> repository = new BufferedRepository<>(bufferSize, repositoryDelay);
 		LOG.info("Criado repositorio para recepcao[bufferSize:" + bufferSize + ", repositoryDelay:" + repositoryDelay);
 
-		/* Instancia executor para processos de leitura de repositorio */
+		// Instancia executor para processos de leitura de repositorio.
 		executorService = Executors.newSingleThreadExecutor();
 
 		executorService.execute(new RepositoryTextReader(repository));
 		LOG.info("Instanciado Leitor de repositório!");
 
-		// setServerSocket(new ServerSocket(getLocalPort(), 100,
-		// getNetworkInterface().getNetworkInterface().getInetAddresses().nextElement()));
 		try {
 			String receptorIp = configuration.getConfiguration(ConfigurationProperty.RECEPTOR_IP);
 			int port = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_PORT));
@@ -112,9 +110,9 @@ public class Receptor {
 
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
-				/* Recebe mensagem */
+				// Recebe mensagem.
 				Socket socket = serverSocket.accept();
-				/* Cria novo processador para a mensagem recebida */
+				// Cria novo processador para a mensagem recebida.
 				socketExecutorService.submit(new ReceptorSocketProcessor(socket, repository));
 			} catch (SocketException e) {
 				if(e.getMessage().contains("Socket closed"))
