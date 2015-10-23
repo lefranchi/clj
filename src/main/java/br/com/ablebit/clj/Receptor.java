@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
@@ -49,14 +47,32 @@ public class Receptor {
 	 */
 	private static ExecutorService socketExecutorService;
 
-	/**
-	 * Futures para leitores de Sockets.
-	 */
-	private static List<Future<Boolean>> socketFutures = new ArrayList<>();
-
 	public static void main(String[] args) {
 
 		LOG.info("Inicializando Receptor...");
+
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			
+			@Override
+			public void run() {
+				
+				LOG.info("Finalizando Receptor...");
+				
+				try {
+				
+					serverSocket.close();
+					socketExecutorService.shutdown();
+					executorService.shutdown();
+					
+				} catch(Exception e) {
+					LOG.error("Erro na finalização do Receptor.", e);
+				}
+				
+				LOG.info("Receptor Finalizado!");
+				
+			}
+			
+		});
 
 		Configuration configuration = new Configuration("clj.properties");
 		try {
@@ -94,37 +110,15 @@ public class Receptor {
 
 		LOG.info("Escutando...");
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				
-				LOG.info("Finalizando Receptor...");
-				
-				try {
-				
-					serverSocket.close();
-					socketExecutorService.shutdown();
-					executorService.shutdown();
-					
-				} catch(Exception e) {
-					LOG.error("Erro na finalização do Receptor.", e);
-				}
-				
-				interrupt();
-				
-				LOG.info("Receptor Finalizado!");
-				
-				System.exit(0);
-				
-			}
-		});
-
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				/* Recebe mensagem */
 				Socket socket = serverSocket.accept();
 				/* Cria novo processador para a mensagem recebida */
-				socketFutures.add(socketExecutorService.submit(new ReceptorSocketProcessor(socket, repository)));
+				socketExecutorService.submit(new ReceptorSocketProcessor(socket, repository));
+			} catch (SocketException e) {
+				if(e.getMessage().contains("Socket closed"))
+					break;
 			} catch (IOException e) {
 				LOG.error("Erro em accept packet.", e);
 			}

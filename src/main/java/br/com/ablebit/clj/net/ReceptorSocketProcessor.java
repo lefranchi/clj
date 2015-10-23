@@ -3,7 +3,6 @@ package br.com.ablebit.clj.net;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
@@ -15,7 +14,7 @@ import br.com.ablebit.clj.data.Repository;
  * @author lfranchi
  *
  */
-public class ReceptorSocketProcessor implements Callable<Boolean> {
+public class ReceptorSocketProcessor implements Runnable {
 
 	/**
 	 * Logger.
@@ -48,28 +47,33 @@ public class ReceptorSocketProcessor implements Callable<Boolean> {
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public Boolean call() throws Exception {
+	public void run() {
 		
 		LOG.info("Rebendo mensagem de " + socket.getRemoteSocketAddress());
 
-		InputStream inputStream = socket.getInputStream();
-		ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+		try {
 		
-		//TODO: Testar necessidade deste while!
-		while(!Thread.interrupted()) {
-
-			Packet packet = (Packet) objectInputStream.readObject();
-			packet.setSource(socket.getRemoteSocketAddress().toString());
+			InputStream inputStream = socket.getInputStream();
+			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
 			
-			getRepository().put(packet);
-			
-		}
+			//TODO: Testar necessidade deste while!
+			while(!Thread.interrupted()) {
+	
+				Packet packet = (Packet) objectInputStream.readObject();
+				packet.setSource(socket.getRemoteSocketAddress().toString());
+				
+				getRepository().put(packet);
+				
+			}
 		
 			//objectInputStream.close();
 			//inputStream.close();
 			//socket.close();
+			
+		} catch(Exception e) {
+			LOG.error(e);
+		}
 		
-		return true;
 	}
 
 	public Socket getSocket() {
