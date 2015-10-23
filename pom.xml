@@ -65,6 +65,7 @@
 							<repositoryLayout>flat</repositoryLayout>
 							<assembleDirectory>${project.build.directory}/clj</assembleDirectory>
         					<repositoryName>lib</repositoryName>
+        					<projectArtifactFirstInClassPath>true</projectArtifactFirstInClassPath>
         					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
         					<copyConfigurationDirectory>true</copyConfigurationDirectory>
         					<configurationDirectory>conf</configurationDirectory>

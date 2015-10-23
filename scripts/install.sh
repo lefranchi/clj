@@ -4,6 +4,8 @@ echo "INICIO ===================================================================
 
 mvn clean package appassembler:assemble -Denvironment=production
 
+echo "DEPLOY ====================================================================="
+
 echo "Removendo Diretorio CLJ..."
 rm -rf /opt/ablebit/clj
 
