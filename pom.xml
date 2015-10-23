@@ -59,107 +59,30 @@
 						<artifactId>appassembler-maven-plugin</artifactId>
 						<version>1.10</version>
 						<configuration>
+							<platforms>
+								<platform>unix</platform>
+							</platforms>
 							<repositoryLayout>flat</repositoryLayout>
-							<target>${project.build.directory}/clj</target>
-							<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-							<configurationDirectory>conf</configurationDirectory>
-							<copyConfigurationDirectory>true</copyConfigurationDirectory>
-
-							<daemons>
-								<daemon>
-									<id>transmissor</id>
-									<mainClass>br.com.ablebit.clj.Transmissor</mainClass>
-									<commandLineArguments>
-										<commandLineArgument>start</commandLineArgument>
-									</commandLineArguments>
-									<platforms>
-										<platform>jsw</platform>
-									</platforms>
-									<generatorConfigurations>
-										<generatorConfiguration>
-											<generator>jsw</generator>
-											<includes>
-												<include>linux-x86-64</include>
-											</includes>
-											<configuration>
-												<property>
-													<name>configuration.directory.in.classpath.first</name>
-													<value>conf</value>
-												</property>
-												<property>
-													<name>set.default.REPO_DIR</name>
-													<value>lib</value>
-												</property>
-												<property>
-													<name>wrapper.logfile</name>
-													<value>logs/wrapper.log</value>
-												</property>
-											</configuration>
-										</generatorConfiguration>
-									</generatorConfigurations>
-									<jvmSettings>
-										<extraArguments>
-											<extraArgument>-server</extraArgument>
-											<extraArgument>-Xdebug</extraArgument>
-											<extraArgument>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044</extraArgument>
-											<extraArgument>-Djava.net.preferIPv4Stack=true</extraArgument>
-										</extraArguments>
-									</jvmSettings>
-								</daemon>
-								<daemon>
+							<assembleDirectory>${project.build.directory}/clj</assembleDirectory>
+        					<repositoryName>lib</repositoryName>
+        					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
+        					<copyConfigurationDirectory>true</copyConfigurationDirectory>
+        					<configurationDirectory>conf</configurationDirectory>
+        					<logsDirectory>logs</logsDirectory>
+        					<extraJvmArguments>-server -Djava.net.preferIPv4Stack=true</extraJvmArguments>
+							<programs>
+								<program>
 									<id>receptor</id>
 									<mainClass>br.com.ablebit.clj.Receptor</mainClass>
-									<commandLineArguments>
-										<commandLineArgument>start</commandLineArgument>
-									</commandLineArguments>
-									<platforms>
-										<platform>jsw</platform>
-									</platforms>
-									<generatorConfigurations>
-										<generatorConfiguration>
-											<generator>jsw</generator>
-											<includes>
-												<include>linux-x86-64</include>
-											</includes>
-											<configuration>
-												<property>
-													<name>configuration.directory.in.classpath.first</name>
-													<value>conf</value>
-												</property>
-												<property>
-													<name>set.default.REPO_DIR</name>
-													<value>lib</value>
-												</property>
-												<property>
-													<name>wrapper.logfile</name>
-													<value>logs/wrapper.log</value>
-												</property>
-											</configuration>
-										</generatorConfiguration>
-									</generatorConfigurations>
-									<jvmSettings>
-										<extraArguments>
-											<extraArgument>-server</extraArgument>
-											<extraArgument>-Xdebug</extraArgument>
-											<extraArgument>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=1044</extraArgument>
-											<extraArgument>-Djava.net.preferIPv4Stack=true</extraArgument>
-										</extraArguments>
-									</jvmSettings>
-								</daemon>
-							</daemons>
+								</program>
+								<program>
+									<id>transmissor</id>
+									<mainClass>br.com.ablebit.clj.Transmissor</mainClass>
+								</program>
+							</programs>
 						</configuration>
-						<executions>
-							<execution>
-								<id>generate-jsw-scripts</id>
-								<phase>package</phase>
-								<goals>
-									<goal>generate-daemons</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
-
 				<resources>
 					<resource>
 						<directory>src/resources</directory>
@@ -168,7 +91,6 @@
 						</excludes>
 					</resource>
 				</resources>
-
 			</build>
 		</profile>
 	</profiles>
