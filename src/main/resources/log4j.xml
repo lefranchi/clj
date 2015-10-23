@@ -37,6 +37,7 @@
 	<root>
 		<priority value="INFO" />
 		<appender-ref ref="stdout" />
+		<appender-ref ref="INFO_FILE" />
 	</root>
 
 </log4j:configuration>
