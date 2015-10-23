@@ -63,8 +63,6 @@ public class Transmissor {
 				
 				LOG.info("Transmissor Finalizado!");
 				
-				System.exit(0);
-				
 			}
 		});
 
