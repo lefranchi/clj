@@ -21,6 +21,7 @@ public class RepositoryAudioWriter implements Runnable {
 	/**
 	 * Logger.
 	 */
+	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(RepositoryAudioWriter.class);
 	
 	/**
@@ -47,27 +48,19 @@ public class RepositoryAudioWriter implements Runnable {
 	 * Construtor Padrao. Ja inicializa Mixers e Lines de Audio de acordo a configuracao.
 	 * 
 	 * @param configuration
+	 * @throws Exception 
 	 */
-	public RepositoryAudioWriter(Repository<Packet> repository, float sampleRate, int sampleSize, int channels, boolean signed, boolean bigEndian) {
+	public RepositoryAudioWriter(Repository<Packet> repository, float sampleRate, int sampleSize, int channels, boolean signed, boolean bigEndian) throws Exception {
 
 		setRepository(repository);
 		
-		try {
-			
-			this.audioFormat = new AudioFormat(sampleRate, sampleSize, channels, signed, bigEndian);
+		this.audioFormat = new AudioFormat(sampleRate, sampleSize, channels, signed, bigEndian);
 
-			DataLine.Info info = new DataLine.Info(TargetDataLine.class, this.audioFormat);
-			targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
-			targetDataLine.open(this.audioFormat, targetDataLine.getBufferSize());
-			targetDataLine.start();
+		DataLine.Info info = new DataLine.Info(TargetDataLine.class, this.audioFormat);
+		targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
+		targetDataLine.open(this.audioFormat, targetDataLine.getBufferSize());
+		targetDataLine.start();
 			
-			LOG.info("Escritor de Repositorio para Audio Instanciado!");
-			
-		} catch(Exception e) {
-			LOG.fatal("Impossivel abrir interface de audio.", e);
-			System.exit(-1);
-		}
-
 	}
 
 	/*

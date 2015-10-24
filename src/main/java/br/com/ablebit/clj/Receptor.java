@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import org.apache.log4j.Logger;
 
 import br.com.ablebit.clj.config.Configuration;
+import br.com.ablebit.clj.config.ConfigurationLoader;
 import br.com.ablebit.clj.config.ConfigurationProperty;
 import br.com.ablebit.clj.data.Repository;
 import br.com.ablebit.clj.data.impl.BufferedRepository;
@@ -81,7 +82,7 @@ public class Receptor {
 
 		Configuration configuration = null;
 		try {
-			configuration = loadConfiguration();
+			configuration = ConfigurationLoader.loadConfiguration();
 		} catch (Exception e) {
 			LOG.fatal("Erro no carregamento de configurações.", e);
 			System.exit(-1);
@@ -164,16 +165,5 @@ public class Receptor {
 		return repository;
 	}
 
-	private static Configuration loadConfiguration() throws Exception {
-		
-		LOG.info("Carregando configuracoes...");
-		
-		Configuration configuration = new Configuration("clj.properties");
-		configuration.load();
-		
-		LOG.info("Configuracoes carregadas com sucesso.");
-
-		return configuration;
-	}
 
 }
