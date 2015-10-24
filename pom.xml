@@ -80,6 +80,14 @@
 									<id>transmissor</id>
 									<mainClass>br.com.ablebit.clj.Transmissor</mainClass>
 								</program>
+								<program>
+									<id>jsinfo</id>
+									<mainClass>br.com.ablebit.clj.audio.jsinfo.JSInfo</mainClass>
+								</program>
+								<program>
+									<id>dataLineTester</id>
+									<mainClass>br.com.ablebit.clj.audio.DataLineTester</mainClass>
+								</program>
 							</programs>
 						</configuration>
 					</plugin>

@@ -1,0 +1,220 @@
+
+AudioFormatPanel.java,650
+public class AudioFormatPanelAudioFormatPanel47,1354
+	public AudioFormatPanel(AudioFormatPanel.AudioFormatPanel131,2878
+	public AudioFormat getAudioFormat(AudioFormatPanel.getAudioFormat177,4604
+	private static float parseFloat(AudioFormatPanel.parseFloat191,5084
+	private static int parseInt(AudioFormatPanel.parseInt209,5329
+	private boolean getRateMagic(AudioFormatPanel.getRateMagic227,5567
+	private boolean getFrameSizeMagic(AudioFormatPanel.getFrameSizeMagic234,5655
+	public void actionPerformed(AudioFormatPanel.actionPerformed241,5753
+	private void calculateAndSetFrameSize(AudioFormatPanel.calculateAndSetFrameSize268,6333
+
+AudioFormatTableModel.java,733
+public class AudioFormatTableModelAudioFormatTableModel38,1145
+	public AudioFormatTableModel(AudioFormatTableModel.AudioFormatTableModel57,1505
+	public void setInfo(AudioFormatTableModel.setInfo63,1546
+	private AudioFormat[] getAudioFormats(AudioFormatTableModel.getAudioFormats71,1639
+	public int getRowCount(AudioFormatTableModel.getRowCount85,1800
+	private String[] getColumnArray(AudioFormatTableModel.getColumnArray92,1870
+	public int getColumnCount(AudioFormatTableModel.getColumnCount99,1937
+	public Class getColumnClass(AudioFormatTableModel.getColumnClass106,2009
+	public String getColumnName(AudioFormatTableModel.getColumnName113,2083
+	public Object getValueAt(AudioFormatTableModel.getValueAt120,2170
+
+ConfigurationFilesTableModel.java,711
+public class ConfigurationFilesTableModelConfigurationFilesTableModel39,1145
+	public ConfigurationFilesTableModel(ConfigurationFilesTableModel.ConfigurationFilesTableModel55,1452
+	public void setName(ConfigurationFilesTableModel.setName62,1547
+	private void cache(ConfigurationFilesTableModel.cache87,2040
+	public int getRowCount(ConfigurationFilesTableModel.getRowCount128,3038
+	public int getColumnCount(ConfigurationFilesTableModel.getColumnCount139,3296
+	public Class getColumnClass(ConfigurationFilesTableModel.getColumnClass145,3369
+	public String getColumnName(ConfigurationFilesTableModel.getColumnName151,3442
+	public Object getValueAt(ConfigurationFilesTableModel.getValueAt158,3531
+
+ControlMutableTreeNode.java,218
+public class ControlMutableTreeNodeControlMutableTreeNode39,1214
+	public ControlMutableTreeNode(ControlMutableTreeNode.ControlMutableTreeNode42,1283
+	public String toString(ControlMutableTreeNode.toString48,1363
+
+ControlPropertiesPanel.java,489
+public class ControlPropertiesPanelControlPropertiesPanel49,1415
+	public ControlPropertiesPanel(ControlPropertiesPanel.ControlPropertiesPanel74,2218
+	public void setControl(ControlPropertiesPanel.setControl168,5912
+	private void setValues(ControlPropertiesPanel.setValues237,8397
+	private void setValues(ControlPropertiesPanel.setValues247,8864
+	private void setValues(ControlPropertiesPanel.setValues255,9186
+	private void setValues(ControlPropertiesPanel.setValues265,9595
+
+ControlsPanel.java,482
+public class ControlsPanelControlsPanel62,1942
+	public ControlsPanel(ControlsPanel.ControlsPanel70,2083
+	private static void addMixerNode(ControlsPanel.addMixerNode98,3182
+	private static void addLineNodes(ControlsPanel.addLineNodes129,4293
+	private static void addControlNodes(ControlsPanel.addControlNodes152,4973
+	private static void addCompoundControlNodes(ControlsPanel.addCompoundControlNodes171,5772
+	public void valueChanged(ControlsPanel.valueChanged189,6381
+
+ConverterTestPanel.java,325
+public class ConverterTestPanelConverterTestPanel51,1526
+	public ConverterTestPanel(ConverterTestPanel.ConverterTestPanel60,1732
+	public void actionPerformed(ConverterTestPanel.actionPerformed118,4417
+	private void outPossible(ConverterTestPanel.outPossible190,6709
+	private void out(ConverterTestPanel.out204,6853
+
+DataLineTableModel.java,276
+public class DataLineTableModelDataLineTableModel39,1170
+	public DataLineTableModel(DataLineTableModel.DataLineTableModel52,1426
+	protected String[] getColumnArray(DataLineTableModel.getColumnArray59,1494
+	public Object getValueAt(DataLineTableModel.getValueAt66,1573
+
+InfoPanel.java,88
+public class InfoPanelInfoPanel54,1618
+	public InfoPanel(InfoPanel.InfoPanel60,1698
+
+JSInfoApplet.java,148
+public class JSInfoAppletJSInfoApplet41,1206
+	public JSInfoApplet(JSInfoApplet.JSInfoApplet48,1284
+	public void init(JSInfoApplet.init53,1315
+
+JSInfoDebug.java,954
+public class JSInfoDebugJSInfoDebug36,1101
+	public static final boolean getTraceAllExceptions(JSInfoDebug.getTraceAllExceptions57,2104
+	public static final boolean getTraceMixerPanel(JSInfoDebug.getTraceMixerPanel62,2197
+	public static final boolean getTraceControlsPanel(JSInfoDebug.getTraceControlsPanel67,2284
+	public static final boolean getTraceControlPropertiesPanel(JSInfoDebug.getTraceControlPropertiesPanel72,2377
+	public static final boolean getTraceLineTableModel(JSInfoDebug.getTraceLineTableModel77,2488
+	public static final boolean getTraceServiceProviderTableModel(JSInfoDebug.getTraceServiceProviderTableModel82,2583
+	public static final boolean getTraceConfigurationFilesTableModel(JSInfoDebug.getTraceConfigurationFilesTableModel88,2701
+	public static void out(JSInfoDebug.out95,2897
+	public static void out(JSInfoDebug.out122,3513
+	private static boolean getBooleanProperty(JSInfoDebug.getBooleanProperty129,3612
+
+JSInfo.java,119
+public class JSInfoJSInfo39,1145
+	public JSInfo(JSInfo.JSInfo45,1201
+	public static void main(JSInfo.main90,2259
+
+JSInfoPane.java,93
+public class JSInfoPaneJSInfoPane39,1152
+	public JSInfoPane(JSInfoPane.JSInfoPane53,1534
+
+LineInfoMutableTreeNode.java,224
+public class LineInfoMutableTreeNodeLineInfoMutableTreeNode40,1247
+	public LineInfoMutableTreeNode(LineInfoMutableTreeNode.LineInfoMutableTreeNode43,1317
+	public String toString(LineInfoMutableTreeNode.toString49,1400
+
+LineLifeCycleAudioInputStream.java,408
+public class LineLifeCycleAudioInputStreamLineLifeCycleAudioInputStream38,1149
+	public LineLifeCycleAudioInputStream(LineLifeCycleAudioInputStream.LineLifeCycleAudioInputStream46,1348
+	private void advanceBufferPointer(LineLifeCycleAudioInputStream.advanceBufferPointer123,3627
+	public int read(LineLifeCycleAudioInputStream.read134,3793
+	public int read(LineLifeCycleAudioInputStream.read143,3912
+
+LineLifeCyclePanel.java,676
+public class LineLifeCyclePanelLineLifeCyclePanel57,1779
+	public LineLifeCyclePanel(LineLifeCyclePanel.LineLifeCyclePanel68,2008
+	private void addMessage(LineLifeCyclePanel.addMessage145,4479
+	public void actionPerformed(LineLifeCyclePanel.actionPerformed152,4565
+	public void update(LineLifeCyclePanel.update254,6846
+	private void outputException(LineLifeCyclePanel.outputException264,7084
+	public class PushThreadLineLifeCyclePanel.PushThread272,7293
+		public PushThread(LineLifeCyclePanel.PushThread.PushThread280,7452
+		public void run(LineLifeCyclePanel.PushThread.run288,7604
+		public void setRunning(LineLifeCyclePanel.PushThread.setRunning331,8390
+
+LineTableModel.java,771
+public abstract class LineTableModelLineTableModel42,1220
+	public LineTableModel(LineTableModel.LineTableModel59,1518
+	private Class getLineInfoClass(LineTableModel.getLineInfoClass66,1606
+	public Mixer getMixer(LineTableModel.getMixer73,1675
+	public void setMixer(LineTableModel.setMixer80,1727
+	protected Line.Info[] getLineInfo(LineTableModel.getLineInfo88,1816
+	public int getRowCount(LineTableModel.getRowCount125,3134
+	public int getColumnCount(LineTableModel.getColumnCount134,3248
+	public Line.Info getLineInfo(LineTableModel.getLineInfo140,3319
+	public Class getColumnClass(LineTableModel.getColumnClass146,3397
+	public String getColumnName(LineTableModel.getColumnName152,3470
+	public Object getValueAt(LineTableModel.getValueAt158,3556
+
+LineTestPanel.java,501
+public class LineTestPanelLineTestPanel56,1720
+	public LineTestPanel(LineTestPanel.LineTestPanel73,2238
+	public void actionPerformed(LineTestPanel.actionPerformed133,4455
+	private Line.Info constructLineInfo(LineTestPanel.constructLineInfo173,5419
+	private Class getDataLineType(LineTestPanel.getDataLineType189,5730
+	private boolean isDefaultBufferSizeDesired(LineTestPanel.isDefaultBufferSizeDesired211,6035
+	private int getDesiredBufferSize(LineTestPanel.getDesiredBufferSize218,6134
+
+MidiDevicePanel.java,118
+public class MidiDevicePanelMidiDevicePanel40,1144
+	public MidiDevicePanel(MidiDevicePanel.MidiDevicePanel49,1303
+
+MidiDeviceTableModel.java,695
+public class MidiDeviceTableModelMidiDeviceTableModel40,1226
+	public MidiDeviceTableModel(MidiDeviceTableModel.MidiDeviceTableModel57,1762
+	public void init(MidiDeviceTableModel.init64,1812
+	protected boolean useIt(MidiDeviceTableModel.useIt97,2553
+	public int getRowCount(MidiDeviceTableModel.getRowCount106,2734
+	public int getColumnCount(MidiDeviceTableModel.getColumnCount113,2796
+	public Class getColumnClass(MidiDeviceTableModel.getColumnClass120,2868
+	public String getColumnName(MidiDeviceTableModel.getColumnName127,2942
+	protected String[] getColumnNames(MidiDeviceTableModel.getColumnNames134,3029
+	public Object getValueAt(MidiDeviceTableModel.getValueAt141,3104
+
+MixerPanel.java,310
+public class MixerPanelMixerPanel49,1496
+	public MixerPanel(MixerPanel.MixerPanel64,1903
+	public void valueChanged(MixerPanel.valueChanged126,3831
+	private void setMixer(MixerPanel.setMixer137,4271
+	private void setMixer(MixerPanel.setMixer147,4576
+	private void setLine(MixerPanel.setLine157,4891
+
+MixerTableModel.java,503
+public class MixerTableModelMixerTableModel34,1041
+	public MixerTableModel(MixerTableModel.MixerTableModel44,1258
+	public int getRowCount(MixerTableModel.getRowCount49,1292
+	public int getColumnCount(MixerTableModel.getColumnCount55,1370
+	public Class getColumnClass(MixerTableModel.getColumnClass61,1443
+	public String getColumnName(MixerTableModel.getColumnName67,1516
+	public Object getValueAt(MixerTableModel.getValueAt73,1604
+	public Mixer getMixer(MixerTableModel.getMixer101,2060
+
+PortTableModel.java,248
+public class PortTableModelPortTableModel36,1112
+	public PortTableModel(PortTableModel.PortTableModel49,1340
+	protected String[] getColumnArray(PortTableModel.getColumnArray56,1400
+	public Object getValueAt(PortTableModel.getValueAt63,1474
+
+SequencerTableModel.java,421
+public class SequencerTableModelSequencerTableModel40,1225
+	public SequencerTableModel(SequencerTableModel.SequencerTableModel47,1495
+	protected boolean useIt(SequencerTableModel.useIt54,1545
+	protected String[] getColumnNames(SequencerTableModel.getColumnNames61,1639
+	public Object getValueAt(SequencerTableModel.getValueAt68,1714
+	private static String getSyncModes(SequencerTableModel.getSyncModes93,2160
+
+ServiceProviderPanel.java,290
+public class ServiceProviderPanelServiceProviderPanel50,1536
+	public ServiceProviderPanel(ServiceProviderPanel.ServiceProviderPanel77,2344
+	public void itemStateChanged(ServiceProviderPanel.itemStateChanged123,3983
+	private void setCategory(ServiceProviderPanel.setCategory137,4261
+
+ServiceProviderTableModel.java,677
+public class ServiceProviderTableModelServiceProviderTableModel36,1057
+	public ServiceProviderTableModel(ServiceProviderTableModel.ServiceProviderTableModel61,1573
+	public void setName(ServiceProviderTableModel.setName112,3126
+	private void cache(ServiceProviderTableModel.cache149,4014
+	public int getRowCount(ServiceProviderTableModel.getRowCount208,5502
+	public int getColumnCount(ServiceProviderTableModel.getColumnCount219,5737
+	public Class getColumnClass(ServiceProviderTableModel.getColumnClass226,5811
+	public String getColumnName(ServiceProviderTableModel.getColumnName233,5885
+	public Object getValueAt(ServiceProviderTableModel.getValueAt240,5974
+
+SynthesizerTableModel.java,359
+public class SynthesizerTableModelSynthesizerTableModel40,1227
+	public SynthesizerTableModel(SynthesizerTableModel.SynthesizerTableModel48,1648
+	protected boolean useIt(SynthesizerTableModel.useIt55,1700
+	protected String[] getColumnNames(SynthesizerTableModel.getColumnNames61,1795
+	public Object getValueAt(SynthesizerTableModel.getValueAt68,1870
