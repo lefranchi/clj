@@ -56,7 +56,7 @@ public class RepositoryTextWriter implements Runnable {
 		        System.out.print("Enter String");
 		        String s = br.readLine();
 				
-				Packet packet = new Packet(packetCounter++, s.getBytes());
+				Packet packet = new Packet(Packet.TYPE_DATA, packetCounter++, s.getBytes());
 				getRepository().put(packet);
 				
 			} catch(IOException e) {

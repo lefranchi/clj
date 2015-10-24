@@ -82,7 +82,7 @@ public class RepositoryAudioWriter implements Runnable {
 				byte packetBuffer[] = new byte[bufferLengthInBytes];
 				System.arraycopy(data, 0, packetBuffer, 0, bufferLengthInBytes);
 
-				Packet packet = new Packet(packetCounter++, packetBuffer);
+				Packet packet = new Packet(Packet.TYPE_DATA, packetCounter++, packetBuffer);
 				getRepository().put(packet);
 				
 	        }

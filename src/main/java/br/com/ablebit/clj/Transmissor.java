@@ -81,6 +81,8 @@ public class Transmissor {
 		}
 
 		Repository<Packet> repository = loadRepository();
+		
+		initPacketTransmission(repository);
 
 		try {
 			loadRepositoryWriter(configuration, repository);
@@ -100,6 +102,17 @@ public class Transmissor {
 		
 		loadSockets(configuration, repository, addresses);
 
+	}
+
+	private static void initPacketTransmission(Repository<Packet> repository) {
+		
+		LOG.info("Criando pacote de inicializacao...");
+		
+		Packet packet = new Packet(Packet.TYPE_INIT, 0, "".getBytes());
+		repository.put(packet);
+		
+		LOG.info("Pacote de inicializacao criado com sucesso.");
+		
 	}
 
 	private static void loadSockets(Configuration configuration, Repository<Packet> repository, List<InetAddress> addresses) {

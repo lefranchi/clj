@@ -3,7 +3,6 @@ package br.com.ablebit.clj.data.reader;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
@@ -78,12 +77,20 @@ public class RepositoryAudioReader implements Runnable {
 				
 				Packet packet = getRepository().take();
 				
-				if (packet.getCounter() > maxPacketCounter) {
-					LOG.info("LENDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );
-					sourceDataLine.write(packet.getContent(), 0 , packet.getContent().length); 
-					maxPacketCounter = packet.getCounter();
+				if (packet.getType() == Packet.TYPE_INIT) {
+				
+					maxPacketCounter = 0; 
+					
 				} else {
-					LOG.info("DESCARTANDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );					
+				
+					if (packet.getCounter() > maxPacketCounter) {
+						LOG.info("LENDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );
+						sourceDataLine.write(packet.getContent(), 0 , packet.getContent().length); 
+						maxPacketCounter = packet.getCounter();
+					} else {
+						LOG.info("DESCARTANDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );					
+					}
+					
 				}
 				
 			} catch (InterruptedException e) {

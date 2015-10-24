@@ -12,7 +12,17 @@ import java.util.Arrays;
 public class Packet implements Serializable, Comparable<Packet> {
 
 	private static final long serialVersionUID = 5565357008039470438L;
+	
+	public static final byte TYPE_INIT = 1;
+	public static final byte TYPE_DATA = 2;
 
+	/**
+	 * Tipo de Pacote. 
+	 * 	0 - Inicializador;
+	 * 	1 - Dados.
+	 */
+	private byte type;
+	
 	/**
 	 * Contador.
 	 */
@@ -31,11 +41,12 @@ public class Packet implements Serializable, Comparable<Packet> {
 	/**
 	 * Construtor.
 	 * 
-	 * @param protocolCommand
+	 * @param type
 	 * @param counter
 	 * @param content
 	 */
-	public Packet(long counter, byte[] content) {
+	public Packet(byte type, long counter, byte[] content) {
+		this.type = type;
 		this.counter = counter;
 		this.content = content;
 	}
@@ -56,11 +67,11 @@ public class Packet implements Serializable, Comparable<Packet> {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(":counter:").append(this.counter);
-		sb.append(":source:").append(this.source);
-		sb.append(":content:").append(new String(this.content));
-		sb.append(":raw:").append(Arrays.toString(this.content));
-		sb.append("-").append(super.toString());
+		sb.append("type:").append(this.type);
+		sb.append(",counter:").append(this.counter);
+		sb.append(",source:").append(this.source);
+		sb.append(",content:").append(new String(this.content));
+		sb.append(",raw:").append(Arrays.toString(this.content));
 		return sb.toString();
 	}
 
@@ -83,6 +94,14 @@ public class Packet implements Serializable, Comparable<Packet> {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+
+	public byte getType() {
+		return type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
 	}
 
 }
