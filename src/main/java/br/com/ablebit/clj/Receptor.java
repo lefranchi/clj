@@ -14,7 +14,7 @@ import br.com.ablebit.clj.config.Configuration;
 import br.com.ablebit.clj.config.ConfigurationProperty;
 import br.com.ablebit.clj.data.Repository;
 import br.com.ablebit.clj.data.impl.BufferedRepository;
-import br.com.ablebit.clj.data.reader.RepositoryTextReader;
+import br.com.ablebit.clj.data.reader.RepositoryAudioReader;
 import br.com.ablebit.clj.net.Packet;
 import br.com.ablebit.clj.net.ReceptorSocketProcessor;
 import br.com.ablebit.clj.thread.NamedThreadFactory;
@@ -35,7 +35,7 @@ public class Receptor {
 	/**
 	 * Executor de processos.
 	 */
-	private static ExecutorService executorService;
+	private static ExecutorService repositoryExecutorService;
 
 	/**
 	 * Server Socket.
@@ -60,9 +60,14 @@ public class Receptor {
 				
 				try {
 				
-					serverSocket.close();
-					socketExecutorService.shutdownNow();
-					executorService.shutdownNow();
+					if(serverSocket!=null)
+						serverSocket.close();
+					
+					if(socketExecutorService!=null)
+						socketExecutorService.shutdownNow();
+					
+					if(repositoryExecutorService!=null)
+						repositoryExecutorService.shutdownNow();
 					
 				} catch(Exception e) {
 					LOG.error("Erro na finalização do Receptor.", e);
@@ -74,33 +79,27 @@ public class Receptor {
 			
 		});
 
-		Configuration configuration = new Configuration("clj.properties");
+		Configuration configuration = null;
 		try {
-			configuration.load();
-			LOG.info("Configuracoes do clj carregadas!");
-		} catch(IOException e) {
-			LOG.fatal("Problemas ao carregar arquivo de configurações.", e);
+			configuration = loadConfiguration();
+		} catch (Exception e) {
+			LOG.fatal("Erro no carregamento de configurações.", e);
 			System.exit(-1);
 		}
 
-		Integer bufferSize = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_BUFFER_SIZE));
-		Integer repositoryDelay = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_DELAY));
-		Repository<Packet> repository = new BufferedRepository<>(bufferSize, repositoryDelay);
-		LOG.info("Criado repositorio para recepcao[bufferSize:" + bufferSize + ", repositoryDelay:" + repositoryDelay);
-
-		// Instancia executor para processos de leitura de repositorio.
-		executorService = Executors.newSingleThreadExecutor();
-
-		executorService.execute(new RepositoryTextReader(repository));
-		LOG.info("Instanciado Leitor de repositório!");
+		Repository<Packet> repository = loadRepository(configuration);
 
 		try {
-			String receptorIp = configuration.getConfiguration(ConfigurationProperty.RECEPTOR_IP);
-			int port = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_PORT));
-			serverSocket = new ServerSocket(port, 0, InetAddress.getByName(receptorIp));
-			LOG.info("ServerSocket Conectado!");
+			loadRepositoryReader(configuration, repository);
 		} catch (Exception e) {
-			LOG.fatal("Erro na inicialização do socket na porta 5000.", e);
+			LOG.fatal("Erro no carregamento do leitor de repositorio.", e);
+			System.exit(-1);
+		}
+
+		try {
+			loadSocket(configuration);
+		} catch (Exception e) {
+			LOG.fatal("Erro no carregamento do socket.", e);
 			System.exit(-1);
 		}
 
@@ -110,9 +109,7 @@ public class Receptor {
 
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
-				// Recebe mensagem.
 				Socket socket = serverSocket.accept();
-				// Cria novo processador para a mensagem recebida.
 				socketExecutorService.submit(new ReceptorSocketProcessor(socket, repository));
 			} catch (SocketException e) {
 				if(e.getMessage().contains("Socket closed"))
@@ -122,6 +119,61 @@ public class Receptor {
 			}
 		}
 
+	}
+
+	private static void loadSocket(Configuration configuration) throws Exception {
+		
+		LOG.info("Carregando socket para recepcao...");
+		
+		String receptorIp = configuration.getConfiguration(ConfigurationProperty.RECEPTOR_IP);
+		int port = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_PORT));
+		serverSocket = new ServerSocket(port, 0, InetAddress.getByName(receptorIp));
+		
+		LOG.info(String.format("Socket[%s:%d] para recepcao carregado com sucesso.", receptorIp, port));
+			
+	}
+
+	private static void loadRepositoryReader(Configuration configuration, Repository<Packet> repository) throws Exception {
+		
+		LOG.info("Carregando leitor de repositorio...");
+		
+		repositoryExecutorService = Executors.newSingleThreadExecutor();
+
+		float sampleRate = Float.valueOf(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_AUDIO_SAMPLERATE));
+		int sampleSize = Integer.valueOf(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_AUDIO_SAMPLESIZE));
+		int channels = Integer.valueOf(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_AUDIO_CHANELS));
+		boolean signed = Boolean.valueOf(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_AUDIO_SIGNED));
+		boolean bigEndian = Boolean.valueOf(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_AUDIO_BIGENDIAN));
+		
+		repositoryExecutorService.execute(new RepositoryAudioReader(repository, sampleRate, sampleSize, channels, signed, bigEndian));
+		
+		LOG.info(String.format("Leitor de Repositorio carregado com sucesso RepositoryAudioReader[sampleRate:%f,sampleSize:%d,chanels:%d,signed:%b,bigEndian:%b].", sampleRate, sampleSize, channels, signed, bigEndian));
+		
+	}
+
+	private static Repository<Packet> loadRepository(Configuration configuration) {
+		
+		LOG.info("Carregando repositorio para recepcao...");
+		
+		Integer bufferSize = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_BUFFER_SIZE));
+		Integer repositoryDelay = new Integer(configuration.getConfiguration(ConfigurationProperty.RECEPTOR_REPOSITORY_DELAY));
+		Repository<Packet> repository = new BufferedRepository<>(bufferSize, repositoryDelay);
+		
+		LOG.info(String.format("Repositorio para recepcao[bufferSize:%d, repositoryDelay:%d] carregado com sucesso.", bufferSize, repositoryDelay) );
+		
+		return repository;
+	}
+
+	private static Configuration loadConfiguration() throws Exception {
+		
+		LOG.info("Carregando configuracoes...");
+		
+		Configuration configuration = new Configuration("clj.properties");
+		configuration.load();
+		
+		LOG.info("Configuracoes carregadas com sucesso.");
+
+		return configuration;
 	}
 
 }

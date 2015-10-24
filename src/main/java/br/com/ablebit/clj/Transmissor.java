@@ -86,8 +86,8 @@ public class Transmissor {
 		executorService.execute(new RepositoryTextWriter(repository));
 		LOG.info("Instanciado Leitor de repositório!");
 		
-		String remoteReceptorIp = configuration.getConfiguration(ConfigurationProperty.REMOTE_RECEPTOR_IP);
-		int remoteReceptorPort = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.REMOTE_RECEPTOR_PORT));
+		String remoteReceptorIp = configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_REMOTE_RECEPTOR_IP);
+		int remoteReceptorPort = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_REMOTE_RECEPTOR_PORT));
 		
 		List<InetAddress> addresses = null;
 		try {

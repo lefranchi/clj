@@ -3,6 +3,7 @@ package br.com.ablebit.clj.data.reader;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
 import org.apache.log4j.Logger;
@@ -48,28 +49,20 @@ public class RepositoryAudioReader implements Runnable {
 	 * Construtor Padrao. Ja inicializa Mixers e Lines de Audio de acordo a configuracao.
 	 * 
 	 * @param repository
+	 * @throws Exception 
 	 * 
 	 */
-	public RepositoryAudioReader(Repository<Packet> repository, float sampleRate, int sampleSize, int channels, boolean signed, boolean bigEndian) {
+	public RepositoryAudioReader(Repository<Packet> repository, float sampleRate, int sampleSize, int channels, boolean signed, boolean bigEndian) throws Exception {
 		
 		this.setRepository(repository);
 		
-		try {
+		this.audioFormat = new AudioFormat(sampleRate, sampleSize, channels, signed, bigEndian);
 			
-			this.audioFormat = new AudioFormat(sampleRate, sampleSize, channels, signed, bigEndian);
-				
-			DataLine.Info info = new DataLine.Info(SourceDataLine.class, this.audioFormat);
-			sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
-            sourceDataLine.open(this.audioFormat, sourceDataLine.getBufferSize());
-			sourceDataLine.start();
+		DataLine.Info info = new DataLine.Info(SourceDataLine.class, this.audioFormat);
+		sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
+        sourceDataLine.open(this.audioFormat, sourceDataLine.getBufferSize());
+		sourceDataLine.start();
             
-            LOG.info("Leitor de Repositorio para Audio Instanciado!");
-            
-		} catch(Exception e) {
-			LOG.fatal("Impossivel abrir interface de audio.", e);
-			System.exit(-1);
-		}
-		
 	}
 
 	/*
