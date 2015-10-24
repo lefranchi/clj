@@ -109,6 +109,7 @@ public class Receptor {
 		LOG.info("Escutando...");
 
 		while (!Thread.currentThread().isInterrupted()) {
+			
 			try {
 				Socket socket = serverSocket.accept();
 				socketExecutorService.submit(new ReceptorSocketProcessor(socket, repository));

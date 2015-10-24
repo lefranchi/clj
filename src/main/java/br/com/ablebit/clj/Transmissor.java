@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
@@ -36,11 +35,11 @@ public class Transmissor {
 	 * Executor para leitura de sockets (NoBlocking IO).
 	 */
 	private static ExecutorService socketExecutorService;
-
+	
 	/**
-	 * Futures para leitores de Sockets.
+	 * Lista de transmissores.
 	 */
-	private static List<Future<Boolean>> socketFutures = new ArrayList<>();
+	private static List<TransmissorSocketProcessor> transmissorSocketProcessors;
 
 	public static void main(String[] args) {
 
@@ -53,9 +52,16 @@ public class Transmissor {
 				LOG.info("Finalizando Transmissor...");
 				
 				try {
-				
-					socketExecutorService.shutdownNow();
-					repositoryExecutorService.shutdownNow();
+
+					for (TransmissorSocketProcessor transmissorSocketProcessor : transmissorSocketProcessors) {
+						transmissorSocketProcessor.disconnect();
+					}
+
+					if(socketExecutorService!=null)
+						socketExecutorService.shutdownNow();
+					
+					if(repositoryExecutorService!=null)
+						repositoryExecutorService.shutdownNow();
 					
 				} catch(Exception e) {
 					LOG.error("Erro na finalização do Transmissor.", e);
@@ -100,6 +106,8 @@ public class Transmissor {
 		
 		LOG.info("Carregando sockets para transmissao...");
 		
+		transmissorSocketProcessors = new ArrayList<>(addresses.size());
+		
 		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("transmissor-socket"));
 
 		String remoteReceptorIp = configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_REMOTE_RECEPTOR_IP);
@@ -109,11 +117,13 @@ public class Transmissor {
 		
 		for(InetAddress address : addresses) {
 			
-			TransmissorSocketProcessor socketProcessor = new TransmissorSocketProcessor(repository, address, localPort++, remoteReceptorIp, remoteReceptorPort);
+			TransmissorSocketProcessor transmissorSocketProcessor = new TransmissorSocketProcessor(repository, address, localPort++, remoteReceptorIp, remoteReceptorPort);
 			
-			socketFutures.add(socketExecutorService.submit(socketProcessor));
+			transmissorSocketProcessors.add(transmissorSocketProcessor);
+			
+			socketExecutorService.submit(transmissorSocketProcessor);
 		
-			LOG.info(String.format("Interface carregada e operando em modo de transmissão[%s]. ", socketProcessor));
+			LOG.info(String.format("Interface carregada e operando em modo de transmissão[%s]. ", transmissorSocketProcessor));
 		
 		}
 		

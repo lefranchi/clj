@@ -1,5 +1,6 @@
 package br.com.ablebit.clj.net;
 
+import java.io.EOFException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -51,12 +52,14 @@ public class ReceptorSocketProcessor implements Runnable {
 		
 		LOG.info("Rebendo mensagem de " + socket.getRemoteSocketAddress());
 
+		InputStream inputStream = null;
+		ObjectInputStream objectInputStream = null;
+
 		try {
 		
-			InputStream inputStream = socket.getInputStream();
-			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+			inputStream = socket.getInputStream();
+			objectInputStream = new ObjectInputStream(inputStream);
 			
-			//TODO: Testar necessidade deste while!
 			while(!Thread.interrupted()) {
 	
 				Packet packet = (Packet) objectInputStream.readObject();
@@ -66,12 +69,18 @@ public class ReceptorSocketProcessor implements Runnable {
 				
 			}
 		
-			//objectInputStream.close();
-			//inputStream.close();
-			//socket.close();
-			
+		} catch(EOFException e) {
+			LOG.info("Efetuando desconexao.");
 		} catch(Exception e) {
 			LOG.error(e);
+		} finally {
+			try {
+				objectInputStream.close();
+				inputStream.close();
+				socket.close();
+			} catch(Exception e) {
+				LOG.error("Erro ao fechar conexao.", e);
+			}
 		}
 		
 	}

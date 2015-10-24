@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +17,7 @@ import br.com.ablebit.clj.data.Repository;
  * @author lfranchi
  *
  */
-public class TransmissorSocketProcessor implements Callable<Boolean> {
+public class TransmissorSocketProcessor implements Runnable {
 
 	/**
 	 * Logger.
@@ -62,6 +62,11 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	private ObjectOutputStream socketOut;
 	
 	/**
+	 * Controle de desconexão.
+	 */
+	private transient AtomicBoolean disconnect;
+	
+	/**
 	 *  Construtor Padrao.
 	 */
 	public TransmissorSocketProcessor(Repository<Packet> repository, InetAddress inetAddress, int localPort, String remoteReceptorIp, int remoteReceptorPort) {
@@ -70,23 +75,31 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 		this.localPort = localPort;
 		this.remoteReceptorIp = remoteReceptorIp;
 		this.remoteReceptorPort = remoteReceptorPort;
+		
+		disconnect = new AtomicBoolean(false);
+		
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public void run() {
 		
-		connect();
+		try {
 		
-		while (!Thread.currentThread().isInterrupted()) {
+			connect();
 			
-			Packet packet = repository.take();
-			
-			LOG.info("ENVIANDO: " + packet.getCounter() + " - " + packet.getContent().length);
-			this.socketOut.writeObject(packet);
-			
+			while (!Thread.currentThread().isInterrupted() && !disconnect.get()) {
+				
+				Packet packet = repository.take();
+				
+				LOG.info("ENVIANDO: " + packet.getCounter() + " - " + packet.getContent().length);
+				this.socketOut.writeObject(packet);
+				
+			}
+
+		} catch(Exception e) {
+			LOG.error(String.format("Falha no socket transmissor[%s].", this), e);
 		}
 		
-		return null;
 	}
 	
 	/**
@@ -104,8 +117,7 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 			getSocket().setSoTimeout(5000);
 			getSocket().setReuseAddress(true);
 			getSocket().setKeepAlive(true);
-
-			//InetAddress inetAddress = (getRemoteReceptorIp().equals("127.0.0.1") ? InetAddress.getLocalHost() : NetworkUtil.getIpv4Address(getNetworkInterface()));
+			
 			getSocket().bind(new InetSocketAddress(getInetAddress(), getLocalPort()));
 	
 			getSocket().connect(new InetSocketAddress(getRemoteReceptorIp(), getRemoteReceptorPort()), 5000);
@@ -124,12 +136,15 @@ public class TransmissorSocketProcessor implements Callable<Boolean> {
 	 */
 	public void disconnect() throws IOException {
 		
-		this.socketOut.flush();
-		this.socketOut.close();
-		this.socketOut = null;
-	
-		this.getSocket().close();
-		this.setSocket(null);
+		if(disconnect!=null)
+			disconnect.set(true);
+		
+		if(this.getSocket()!=null) {
+			this.getSocket().shutdownInput();
+			this.getSocket().shutdownOutput();
+			this.getSocket().close();
+			this.setSocket(null);
+		}
 		
 	}
 	
