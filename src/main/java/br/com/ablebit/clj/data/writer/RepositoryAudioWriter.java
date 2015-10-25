@@ -69,14 +69,14 @@ public class RepositoryAudioWriter implements Runnable {
 	 */
 	@Override
 	public void run() {
-		
+
+		int frameSizeInBytes = this.audioFormat.getFrameSize();
+        int bufferLengthInFrames = targetDataLine.getBufferSize() / 8;
+        int bufferLengthInBytes = bufferLengthInFrames * frameSizeInBytes;
+        byte[] data = new byte[bufferLengthInBytes];
+
 		while(!Thread.currentThread().isInterrupted()) {
 			
-			int frameSizeInBytes = this.audioFormat.getFrameSize();
-	        int bufferLengthInFrames = targetDataLine.getBufferSize() / 8;
-	        int bufferLengthInBytes = bufferLengthInFrames * frameSizeInBytes;
-	        byte[] data = new byte[bufferLengthInBytes];
-	        
 			if(targetDataLine.read(data, 0, bufferLengthInBytes) != -1) {
 
 				byte packetBuffer[] = new byte[bufferLengthInBytes];
