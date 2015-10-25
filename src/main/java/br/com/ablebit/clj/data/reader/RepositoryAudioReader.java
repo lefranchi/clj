@@ -79,16 +79,18 @@ public class RepositoryAudioReader implements Runnable {
 				
 				if (packet.getType() == Packet.TYPE_INIT) {
 				
+					LOG.info("Iniciando/Reiniciando transmissao.");
+					
 					maxPacketCounter = 0; 
 					
 				} else {
 				
 					if (packet.getCounter() > maxPacketCounter) {
-						LOG.info("LENDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );
+						LOG.debug("LENDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );
 						sourceDataLine.write(packet.getContent(), 0 , packet.getContent().length); 
 						maxPacketCounter = packet.getCounter();
 					} else {
-						LOG.info("DESCARTANDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );					
+						 LOG.info("DESCARTANDO==" + packet.getCounter() + " - Tamanho: " + packet.getContent().length );					
 					}
 					
 				}

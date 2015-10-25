@@ -91,7 +91,7 @@ public class TransmissorSocketProcessor implements Runnable {
 				
 				Packet packet = repository.take();
 				
-				LOG.info("ENVIANDO: " + packet.getCounter() + " - " + packet.getContent().length);
+				LOG.debug("ENVIANDO: " + packet.getCounter() + " - " + packet.getContent().length);
 				this.socketOut.writeObject(packet);
 				
 			}

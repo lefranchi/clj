@@ -71,7 +71,7 @@ public class BufferedRepository<T> extends PriorityBlockingQueue<T> implements R
 		/* Pega o valor do Buffer, aguardando o primeiro que entrar caso ele esteja vazio */
 		T object = super.take();
 		
-		LOG.info("Tamanho do buffer " + size());
+		LOG.debug("Tamanho do buffer " + size());
 		
 		/* Fecha a leitura do buffer quando nao existe mais objetos */
 		closed = size()==0;
