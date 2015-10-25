@@ -161,13 +161,14 @@ public class Transmissor {
 		
 		repositoryExecutorService = Executors.newSingleThreadExecutor();
 
+		double minVolumeRMS = Double.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_MIN_VOLUME_RMS));
 		float sampleRate = Float.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_SAMPLERATE));
 		int sampleSize = Integer.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_SAMPLESIZE));
 		int channels = Integer.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_CHANELS));
 		boolean signed = Boolean.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_SIGNED));
 		boolean bigEndian = Boolean.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_BIGENDIAN));
 		
-		repositoryExecutorService.execute(new RepositoryAudioWriter(repository, sampleRate, sampleSize, channels, signed, bigEndian));
+		repositoryExecutorService.execute(new RepositoryAudioWriter(repository, minVolumeRMS, sampleRate, sampleSize, channels, signed, bigEndian));
 		
 		LOG.info(String.format("Escritor de Repositorio carregado com sucesso RepositoryAudioWriter[sampleRate:%f,sampleSize:%d,chanels:%d,signed:%b,bigEndian:%b].", sampleRate, sampleSize, channels, signed, bigEndian));
 

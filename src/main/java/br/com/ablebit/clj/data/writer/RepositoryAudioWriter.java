@@ -7,6 +7,7 @@ import javax.sound.sampled.TargetDataLine;
 
 import org.apache.log4j.Logger;
 
+import br.com.ablebit.clj.audio.AudioUtils;
 import br.com.ablebit.clj.data.Repository;
 import br.com.ablebit.clj.net.Packet;
 
@@ -21,7 +22,6 @@ public class RepositoryAudioWriter implements Runnable {
 	/**
 	 * Logger.
 	 */
-	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger(RepositoryAudioWriter.class);
 	
 	/**
@@ -45,14 +45,21 @@ public class RepositoryAudioWriter implements Runnable {
 	private long packetCounter = 0;
 	
 	/**
+	 * Volume RMS minimo para transmissao.
+	 */
+	private double minVolumeRms = 0;
+	
+	/**
 	 * Construtor Padrao. Ja inicializa Mixers e Lines de Audio de acordo a configuracao.
 	 * 
 	 * @param configuration
 	 * @throws Exception 
 	 */
-	public RepositoryAudioWriter(Repository<Packet> repository, float sampleRate, int sampleSize, int channels, boolean signed, boolean bigEndian) throws Exception {
+	public RepositoryAudioWriter(Repository<Packet> repository, double minVolumeRms, float sampleRate, int sampleSize, int channels, boolean signed, boolean bigEndian) throws Exception {
 
 		setRepository(repository);
+		
+		setMinVolumeRms(minVolumeRms);
 		
 		this.audioFormat = new AudioFormat(sampleRate, sampleSize, channels, signed, bigEndian);
 
@@ -80,10 +87,21 @@ public class RepositoryAudioWriter implements Runnable {
 			if(targetDataLine.read(data, 0, bufferLengthInBytes) != -1) {
 
 				byte packetBuffer[] = new byte[bufferLengthInBytes];
+
 				System.arraycopy(data, 0, packetBuffer, 0, bufferLengthInBytes);
 
-				Packet packet = new Packet(Packet.TYPE_DATA, packetCounter++, packetBuffer);
-				getRepository().put(packet);
+				double volumeRMS = 0;
+				if (getMinVolumeRms()==-1) //Disabled check.
+					volumeRMS = 100000;
+				else
+					volumeRMS = AudioUtils.volumeRMS(packetBuffer);
+				
+				if (volumeRMS >= getMinVolumeRms()) {	
+					Packet packet = new Packet(Packet.TYPE_DATA, packetCounter++, packetBuffer);
+					getRepository().put(packet);
+				} else {
+					LOG.debug(String.format("Pacote descartado pelo volume abaixo do minimo [min:%f,rms:%f]", getMinVolumeRms(), volumeRMS));
+				}
 				
 	        }
 			
@@ -99,6 +117,14 @@ public class RepositoryAudioWriter implements Runnable {
 
 	public void setRepository(Repository<Packet> repository) {
 		this.repository = repository;
+	}
+
+	public double getMinVolumeRms() {
+		return minVolumeRms;
+	}
+
+	public void setMinVolumeRms(double minVolumeRms) {
+		this.minVolumeRms = minVolumeRms;
 	}
 
 }
