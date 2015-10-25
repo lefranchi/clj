@@ -88,6 +88,10 @@
 									<id>dataLineTester</id>
 									<mainClass>br.com.ablebit.clj.audio.DataLineTester</mainClass>
 								</program>
+								<program>
+									<id>rmsVolumeTester</id>
+									<mainClass>br.com.ablebit.clj.audio.RmsVolumeTester</mainClass>
+								</program>
 							</programs>
 						</configuration>
 					</plugin>
