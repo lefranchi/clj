@@ -2,6 +2,8 @@
 
 echo "INICIO ====================================================================="
 
+./depInstall.sh
+
 mvn clean package appassembler:assemble -Denvironment=production
 
 echo "DEPLOY ====================================================================="

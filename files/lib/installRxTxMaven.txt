@@ -1,0 +1,6 @@
+mvn install:install-file -DgroupId=org.rxtx \
+-DartifactId=rxtx \
+-Dversion=2.2pre2 \
+-Dfile=RXTXcomm-2.2pre2.jar \
+-Dpackaging=jar \
+-DgeneratePom=true

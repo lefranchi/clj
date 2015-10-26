@@ -1,0 +1,3 @@
+
+KERNEL=="ttyUSB*", SUBSYSTEM=="tty", RUN+="clj-ppp.sh %k %n %p %b $driver %M %m $name %S"
+
