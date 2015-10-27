@@ -1,6 +1,6 @@
 # Chico Leandro Java #
 
-Este projeto tem como objetivo transmitir media via rede. A transmissão é feita por todos meios de rede disponíveis efetuando balanceamento de carga e tolerância a falhas entre eles.
+Este projeto tem como objetivo transmitir mídia via rede. A transmissão é feita por todos meios de rede disponíveis efetuando balanceamento de carga e tolerância a falhas entre eles.
 
 ### Artefatos ###
 
