@@ -1,17 +1,12 @@
 #!/bin/sh
 #############################################################################################
 #
-#  
+#
 #
 #############################################################################################
 
 printLog() {
-	echo "$1" >> /home/lfranchi/work/tmp/meuperu.log;
+	echo "$1" >> /opt/ablebit/clj/logs/udev.log;
 }
 
 printLog "ENTROU->$1 : ACAO->${ACTION}"
-
-sleep 5
-
-printLog "FIM $1"
-

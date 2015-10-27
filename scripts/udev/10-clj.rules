@@ -1,3 +1,2 @@
 
-KERNEL=="ttyUSB*", SUBSYSTEM=="tty", RUN+="clj-ppp.sh %k %n %p %b $driver %M %m $name %S"
-
+KERNEL=="ttyUSB*", SUBSYSTEM=="tty", RUN+="/opt/ablebit/clj/bin/clj-ppp.sh %k %n %p %b $driver %M %m $name %S"
