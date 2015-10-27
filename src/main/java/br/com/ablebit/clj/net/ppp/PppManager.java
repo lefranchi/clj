@@ -57,7 +57,15 @@ public class PppManager {
 		
 		LOG.info("Inicializando Conector PPP...");
 
+		if(args.length<2) {
+			LOG.info("Finalizando com erro. Numero de parametros incorreto.");
+			System.exit(-1);
+		}
+		
 		String deviceName = args[0];
+		String action = args[1];
+		
+		LOG.info(String.format("Executando %s em %s.", action, deviceName));
 
 		LOG.debug("Carregando templates pppd[chatscripts]...");
 		try {
