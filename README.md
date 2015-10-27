@@ -1,29 +1,21 @@
-# README #
+# Chico Leandro Java #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Este projeto tem como objetivo transmitir media via rede. A transmissão é feita por todos meios de rede disponíveis efetuando balanceamento de carga e tolerância a falhas entre eles.
 
-### What is this repository for? ###
+### Artefatos ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Receptor: Recebe dados;
+* Transmissor: Envia dados;
+* JSInfo: Aplicativo de áudio para testes;
+* DataLineTester: Verifica DataLines disponíveis no equipamento;
+* RmsVolumeTester: Testa volume de entrada;
+* PPPManager: Gerenciador de conexão/desconexão de modem via ppp.
 
-### How do I get set up? ###
+### Scripts ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+* udev/10-clj.rules: udev para acionar o programa gerenciador de conexão/desconexão;
+* udev/clj-ppp.sh: shell que executa o programa acionado pelo udev rule;
+* depInstall.sh: instala dependências maven não contidas no reportório central;
+* install.sh: compila e instala todos artefatos do sistema;
+* kill.sh: finaliza execução de todos programas do sistema;
+* uninstall.sh: remove todo o sistema.
