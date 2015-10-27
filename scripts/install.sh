@@ -2,7 +2,7 @@
 
 echo "INICIO ====================================================================="
 
-./depInstall.sh
+./scripts/depInstall.sh
 
 mvn clean package appassembler:assemble -Denvironment=production
 
