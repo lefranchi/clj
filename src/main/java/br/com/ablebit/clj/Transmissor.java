@@ -12,6 +12,8 @@ import br.com.ablebit.clj.config.Configuration;
 import br.com.ablebit.clj.config.ConfigurationLoader;
 import br.com.ablebit.clj.config.ConfigurationProperty;
 import br.com.ablebit.clj.data.Repository;
+import br.com.ablebit.clj.data.StatisticsWriter;
+import br.com.ablebit.clj.data.impl.MongoStatisticsWriter;
 import br.com.ablebit.clj.data.impl.PriorityRepository;
 import br.com.ablebit.clj.data.writer.RepositoryAudioWriter;
 import br.com.ablebit.clj.net.NetworkUtil;
@@ -29,7 +31,7 @@ public class Transmissor {
 	/**
 	 * Executor de processos.
 	 */
-	private static ExecutorService repositoryExecutorService;
+	private static ExecutorService servicesExecutorService;
 	
 	/**
 	 * Executor para leitura de sockets (NoBlocking IO).
@@ -60,8 +62,8 @@ public class Transmissor {
 					if(socketExecutorService!=null)
 						socketExecutorService.shutdownNow();
 					
-					if(repositoryExecutorService!=null)
-						repositoryExecutorService.shutdownNow();
+					if(servicesExecutorService!=null)
+						servicesExecutorService.shutdownNow();
 					
 				} catch(Exception e) {
 					LOG.error("Erro na finalização do Transmissor.", e);
@@ -79,11 +81,13 @@ public class Transmissor {
 			LOG.fatal("Erro no carregamento de configurações.", e);
 			System.exit(-1);
 		}
+		
+		servicesExecutorService = Executors.newFixedThreadPool(2);
 
 		Repository<Packet> repository = loadRepository();
 		
-		initPacketTransmission(repository);
-
+		createPacketTransmissionInit(repository);
+		
 		try {
 			loadRepositoryWriter(configuration, repository);
 		} catch (Exception e) {
@@ -91,7 +95,13 @@ public class Transmissor {
 			System.exit(-1);
 		}
 		
-		
+		try {
+			loadStatisticsWriter();
+		} catch (Exception e) {
+			LOG.fatal("Erro no carregamento do escritor de estatisticas.", e);
+			System.exit(-1);
+		}
+
 		List<InetAddress> addresses = null;
 		try {
 			addresses = loadLocalInterfaces();
@@ -101,10 +111,10 @@ public class Transmissor {
 		}
 		
 		loadSockets(configuration, repository, addresses);
-
+		
 	}
 
-	private static void initPacketTransmission(Repository<Packet> repository) {
+	private static void createPacketTransmissionInit(Repository<Packet> repository) {
 		
 		LOG.info("Criando pacote de inicializacao...");
 		
@@ -159,8 +169,6 @@ public class Transmissor {
 		
 		LOG.info("Carregando escritor de repositorio...");
 		
-		repositoryExecutorService = Executors.newSingleThreadExecutor();
-
 		double minVolumeRMS = Double.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_MIN_VOLUME_RMS));
 		float sampleRate = Float.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_SAMPLERATE));
 		int sampleSize = Integer.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_SAMPLESIZE));
@@ -168,9 +176,21 @@ public class Transmissor {
 		boolean signed = Boolean.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_SIGNED));
 		boolean bigEndian = Boolean.valueOf(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_AUDIO_BIGENDIAN));
 		
-		repositoryExecutorService.execute(new RepositoryAudioWriter(repository, minVolumeRMS, sampleRate, sampleSize, channels, signed, bigEndian));
+		servicesExecutorService.execute(new RepositoryAudioWriter(repository, minVolumeRMS, sampleRate, sampleSize, channels, signed, bigEndian));
 		
 		LOG.info(String.format("Escritor de Repositorio carregado com sucesso RepositoryAudioWriter[sampleRate:%f,sampleSize:%d,chanels:%d,signed:%b,bigEndian:%b].", sampleRate, sampleSize, channels, signed, bigEndian));
+
+	}
+
+	private static void loadStatisticsWriter() throws Exception {
+		
+		LOG.info("Carregando escritor de estatisticas...");
+		
+		StatisticsWriter statisticsWriter = new MongoStatisticsWriter(transmissorSocketProcessors);
+		
+		servicesExecutorService.execute(statisticsWriter);
+		
+		LOG.info("Escritor de Estatisticas carregado com sucesso.");
 
 	}
 

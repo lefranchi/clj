@@ -67,6 +67,16 @@ public class TransmissorSocketProcessor implements Runnable {
 	private transient AtomicBoolean disconnect;
 	
 	/**
+	 * Total de Pacotes Enviados.
+	 */
+	private long totalPacketSent;
+	
+	/**
+	 * Total de GB Enviados.
+	 */
+	private double totalPackeSentGB;
+	
+	/**
 	 *  Construtor Padrao.
 	 */
 	public TransmissorSocketProcessor(Repository<Packet> repository, InetAddress inetAddress, int localPort, String remoteReceptorIp, int remoteReceptorPort) {
@@ -94,12 +104,25 @@ public class TransmissorSocketProcessor implements Runnable {
 				LOG.debug("ENVIANDO: " + packet.getCounter() + " - " + packet.getContent().length);
 				this.socketOut.writeObject(packet);
 				
+				updateStatistics(packet);
+				
 			}
 
 		} catch(Exception e) {
 			LOG.error(String.format("Falha no socket transmissor[%s].", this), e);
 		}
 		
+	}
+
+	/**
+	 * Atualiza informacoes estatisticas.
+	 * 
+	 * @param packet
+	 */
+	private void updateStatistics(Packet packet) {
+		setTotalPacketSent(getTotalPacketSent() + 1);
+		setTotalPackeSentGB(getTotalPackeSentGB() + ((packet.getContent().length/1024)/1024)); //TODO: Verificar conta.
+		LOG.debug(String.format("Enviados %d pacotes totalizando %fGB de dados enviados pela interface %s.", getTotalPacketSent(), getTotalPackeSentGB(), getInetAddress().getAddress().toString()));
 	}
 	
 	/**
@@ -212,6 +235,22 @@ public class TransmissorSocketProcessor implements Runnable {
 
 	public void setInetAddress(InetAddress inetAddress) {
 		this.inetAddress = inetAddress;
+	}
+
+	public long getTotalPacketSent() {
+		return totalPacketSent;
+	}
+
+	public void setTotalPacketSent(long totalPacketSent) {
+		this.totalPacketSent = totalPacketSent;
+	}
+
+	public double getTotalPackeSentGB() {
+		return totalPackeSentGB;
+	}
+
+	public void setTotalPackeSentGB(double totalPackeSentGB) {
+		this.totalPackeSentGB = totalPackeSentGB;
 	}
 
 }
