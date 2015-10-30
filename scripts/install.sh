@@ -37,6 +37,8 @@ chmod +x /opt/ablebit/clj/bin/jsinfo
 chmod +x /opt/ablebit/clj/bin/dataLineTester
 chmod +x /opt/ablebit/clj/bin/rmsVolumeTester
 chmod +x /opt/ablebit/clj/bin/pppManager
+chmod +x /opt/ablebit/clj/bin/pppInitializer
+chmod +x /opt/ablebit/clj/bin/pppDbUpdate
 chmod +x /opt/ablebit/clj/bin/clj-ppp.sh
 
 echo "FIM ====================================================================="

@@ -91,7 +91,7 @@ extends AbstractTableModel
 	{
 		Mixer.Info	info = getMixerInfo(nRow);
 		Mixer		mixer = getMixer(nRow);
-		// TODO ??
+		
 		// Line.Info	lineInfo = mixer.getLineInfo();
 		switch (nColumn)
 		{
@@ -135,7 +135,6 @@ extends AbstractTableModel
 
 
 
-	// TODO: make private (used in MixerTableModel)
 	public Mixer getMixer(int nIndex)
 	{
 		if (m_aMixers == null)

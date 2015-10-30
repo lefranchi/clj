@@ -108,6 +108,14 @@
 									<id>pppManager</id>
 									<mainClass>br.com.ablebit.clj.net.ppp.PppManager</mainClass>
 								</program>
+								<program>
+									<id>pppInitializer</id>
+									<mainClass>br.com.ablebit.clj.net.ppp.PppInitializer</mainClass>
+								</program>
+								<program>
+									<id>pppDbUpdate</id>
+									<mainClass>br.com.ablebit.clj.net.ppp.PppDbUpdate</mainClass>
+								</program>
 							</programs>
 						</configuration>
 					</plugin>

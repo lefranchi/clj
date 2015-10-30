@@ -226,7 +226,7 @@ extends JPanel
 			m_floatPanel.setVisible(false);
 			m_nullPanel.setVisible(true);
 		}
-		// TODO: necessary?
+		
 		validate();
 		if (JSInfoDebug.getTraceControlPropertiesPanel()) { JSInfoDebug.out("ControlPropertiesPanel.setControl(): end"); }
 	}

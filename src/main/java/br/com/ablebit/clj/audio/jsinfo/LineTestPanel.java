@@ -138,7 +138,6 @@ implements ActionListener
 			try {
 				((SourceDataLine) AudioSystem.getLine(lineInfo)).open();
 			} catch (LineUnavailableException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			

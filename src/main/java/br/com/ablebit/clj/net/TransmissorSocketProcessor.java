@@ -131,7 +131,7 @@ public class TransmissorSocketProcessor implements Runnable {
 	}	
 	
 	/**
-	 * Disconecta Soket. TODO: Chamar no shutdown do Executor.
+	 * Disconecta Soket. 
 	 * @throws IOException
 	 */
 	public void disconnect() throws IOException {

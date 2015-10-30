@@ -60,7 +60,7 @@ extends JPanel
 	{
 		this.setLayout(new BorderLayout());
 		JPanel	topPanel = new JPanel();
-		// TODO: fetch version from somewhere else
+		
 		topPanel.add(new JLabel("JSInfo 0.x.0"));
 		this.add(topPanel, BorderLayout.NORTH);
 
