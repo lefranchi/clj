@@ -12,8 +12,6 @@ import br.com.ablebit.clj.config.Configuration;
 import br.com.ablebit.clj.config.ConfigurationLoader;
 import br.com.ablebit.clj.config.ConfigurationProperty;
 import br.com.ablebit.clj.data.Repository;
-import br.com.ablebit.clj.data.StatisticsWriter;
-import br.com.ablebit.clj.data.impl.MongoStatisticsWriter;
 import br.com.ablebit.clj.data.impl.PriorityRepository;
 import br.com.ablebit.clj.data.writer.RepositoryAudioWriter;
 import br.com.ablebit.clj.net.NetworkUtil;
@@ -95,13 +93,6 @@ public class Transmissor {
 			System.exit(-1);
 		}
 		
-		try {
-			loadStatisticsWriter();
-		} catch (Exception e) {
-			LOG.fatal("Erro no carregamento do escritor de estatisticas.", e);
-			System.exit(-1);
-		}
-
 		List<InetAddress> addresses = null;
 		try {
 			addresses = loadLocalInterfaces();
@@ -179,18 +170,6 @@ public class Transmissor {
 		servicesExecutorService.execute(new RepositoryAudioWriter(repository, minVolumeRMS, sampleRate, sampleSize, channels, signed, bigEndian));
 		
 		LOG.info(String.format("Escritor de Repositorio carregado com sucesso RepositoryAudioWriter[sampleRate:%f,sampleSize:%d,chanels:%d,signed:%b,bigEndian:%b].", sampleRate, sampleSize, channels, signed, bigEndian));
-
-	}
-
-	private static void loadStatisticsWriter() throws Exception {
-		
-		LOG.info("Carregando escritor de estatisticas...");
-		
-		StatisticsWriter statisticsWriter = new MongoStatisticsWriter(transmissorSocketProcessors);
-		
-		servicesExecutorService.execute(statisticsWriter);
-		
-		LOG.info("Escritor de Estatisticas carregado com sucesso.");
 
 	}
 
