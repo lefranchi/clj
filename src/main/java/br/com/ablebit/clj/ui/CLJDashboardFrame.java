@@ -1,7 +1,7 @@
 package br.com.ablebit.clj.ui;
 
 import java.awt.Component;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +33,8 @@ public class CLJDashboardFrame extends JFrame {
 	
 	private void initComponents() {
 		
-		setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+		setLayout(new WrapLayout());
+		setSize(new Dimension(540, 540));
 		setTitle("CLJ");
 
 		scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -83,8 +84,6 @@ public class CLJDashboardFrame extends JFrame {
 			
 		}
 
-		this.pack();
-		
 	}
 
 	public List<TransmissorSocketProcessor> getTransmissorSocketProcessors() {
