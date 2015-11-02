@@ -1,8 +1,8 @@
 package br.com.ablebit.clj;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,6 +18,7 @@ import br.com.ablebit.clj.net.NetworkUtil;
 import br.com.ablebit.clj.net.Packet;
 import br.com.ablebit.clj.net.TransmissorSocketProcessor;
 import br.com.ablebit.clj.thread.NamedThreadFactory;
+import br.com.ablebit.clj.ui.CLJDashboardFrame;
 
 public class Transmissor {
 
@@ -81,6 +82,11 @@ public class Transmissor {
 		}
 		
 		servicesExecutorService = Executors.newFixedThreadPool(2);
+		
+		transmissorSocketProcessors = new CopyOnWriteArrayList<>();
+		
+		CLJDashboardFrame dashboardFrame = new CLJDashboardFrame(transmissorSocketProcessors);
+		dashboardFrame.setVisible(true);
 
 		Repository<Packet> repository = loadRepository();
 		
@@ -102,7 +108,7 @@ public class Transmissor {
 		}
 		
 		loadSockets(configuration, repository, addresses);
-		
+
 	}
 
 	private static void createPacketTransmissionInit(Repository<Packet> repository) {
@@ -119,8 +125,6 @@ public class Transmissor {
 	private static void loadSockets(Configuration configuration, Repository<Packet> repository, List<InetAddress> addresses) {
 		
 		LOG.info("Carregando sockets para transmissao...");
-		
-		transmissorSocketProcessors = new ArrayList<>(addresses.size());
 		
 		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("transmissor-socket"));
 

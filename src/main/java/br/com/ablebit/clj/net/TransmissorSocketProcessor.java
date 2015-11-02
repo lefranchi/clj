@@ -6,10 +6,12 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
 
 import br.com.ablebit.clj.data.Repository;
+import br.com.ablebit.clj.data.type.AtomicFloat;
 
 /**
  * Classe que envia pacotes TCP.
@@ -69,12 +71,17 @@ public class TransmissorSocketProcessor implements Runnable {
 	/**
 	 * Total de Pacotes Enviados.
 	 */
-	private long totalPacketSent;
+	private AtomicLong totalPacketSent = new AtomicLong(0);
 	
 	/**
 	 * Total de GB Enviados.
 	 */
-	private double totalPacketSentGB;
+	private AtomicFloat totalPacketSentGB = new AtomicFloat(0);
+	
+	/**
+	 * Largura da banda. Mbits/s.
+	 */
+	private double bandwidth;
 	
 	/**
 	 *  Construtor Padrao.
@@ -93,6 +100,9 @@ public class TransmissorSocketProcessor implements Runnable {
 	@Override
 	public void run() {
 		
+		long lBegin = 0;
+        long lEnd = 0;
+        
 		try {
 		
 			connect();
@@ -102,9 +112,11 @@ public class TransmissorSocketProcessor implements Runnable {
 				Packet packet = repository.take();
 				
 				LOG.debug("ENVIANDO: " + packet.getCounter() + " - " + packet.getContent().length);
+				lBegin = System.nanoTime();
 				this.socketOut.writeObject(packet);
+				lEnd = System.nanoTime();
 				
-				updateStatistics(packet);
+				updateStatistics(packet, (lEnd - lBegin));
 				
 			}
 
@@ -119,10 +131,12 @@ public class TransmissorSocketProcessor implements Runnable {
 	 * 
 	 * @param packet
 	 */
-	private void updateStatistics(Packet packet) {
-		setTotalPacketSent(getTotalPacketSent() + 1);
-		setTotalPacketSentGB(getTotalPacketSentGB() + ((packet.getContent().length/1024)/1024)); //TODO: Verificar conta.
-		LOG.debug(String.format("Enviados %d pacotes totalizando %fGB de dados enviados pela interface %s.", getTotalPacketSent(), getTotalPacketSentGB(), getInetAddress().getAddress().toString()));
+	private void updateStatistics(Packet packet, long lDelta) {
+		getTotalPacketSent().set(packet.getCounter());
+		getTotalPacketSentGB().set(getTotalPacketSentGB().get()+(packet.getContent().length/1024));
+		setBandwidth(packet.getContent().length / 1024.0 / 1024.0 * 8.0 / lDelta * 1e-9 );
+		//TODO: NAO ESTA PRINTANDO O BANDWIDTH CORRETAMENTE.
+		LOG.debug(String.format("[%d:pacotes][%2fGB:dados][%.2f:Mbits/s] -> enviados pela interface %s.", getTotalPacketSent().longValue(), getTotalPacketSentGB().floatValue(), getBandwidth(), getInetAddress().getAddress().toString()));
 	}
 	
 	/**
@@ -237,20 +251,28 @@ public class TransmissorSocketProcessor implements Runnable {
 		this.inetAddress = inetAddress;
 	}
 
-	public long getTotalPacketSent() {
+	public AtomicLong getTotalPacketSent() {
 		return totalPacketSent;
 	}
 
-	public void setTotalPacketSent(long totalPacketSent) {
+	public void setTotalPacketSent(AtomicLong totalPacketSent) {
 		this.totalPacketSent = totalPacketSent;
 	}
 
-	public double getTotalPacketSentGB() {
+	public AtomicFloat getTotalPacketSentGB() {
 		return totalPacketSentGB;
 	}
 
-	public void setTotalPacketSentGB(double totalPacketSentGB) {
+	public void setTotalPacketSentGB(AtomicFloat totalPacketSentGB) {
 		this.totalPacketSentGB = totalPacketSentGB;
+	}
+
+	public double getBandwidth() {
+		return bandwidth;
+	}
+
+	public void setBandwidth(double bandwidth) {
+		this.bandwidth = bandwidth;
 	}
 
 }

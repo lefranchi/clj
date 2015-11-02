@@ -109,24 +109,24 @@ public class CLJDashboardFrame extends JFrame {
 	
 			Thread.sleep(3000);
 			
-			t1.setTotalPacketSentGB(234.56);
-			t1.setTotalPacketSent(3456);
+			//t1.setTotalPacketSentGB(234.56);
+			//t1.setTotalPacketSent(3456);
 			
 			TransmissorSocketProcessor t2 = new TransmissorSocketProcessor(null, InetAddress.getLoopbackAddress(), 5001, "29998494", 34645);
 			transmissorSocketProcessors.add(t2);
 
 			Thread.sleep(3000);
 
-			t1.setTotalPacketSentGB(1234.56);
-			t1.setTotalPacketSent(345609);
+			//t1.setTotalPacketSentGB(1234.56);
+			//t1.setTotalPacketSent(345609);
 
 			TransmissorSocketProcessor t3 = new TransmissorSocketProcessor(null, InetAddress.getLoopbackAddress(), 5001, "29998494", 34645);
 			transmissorSocketProcessors.add(t3);
 
 			Thread.sleep(3000);
 
-			t2.setTotalPacketSentGB(234.56);
-			t2.setTotalPacketSent(3456);
+			//t2.setTotalPacketSentGB(234.56);
+			//t2.setTotalPacketSent(3456);
 			
 			TransmissorSocketProcessor t4 = new TransmissorSocketProcessor(null, InetAddress.getLoopbackAddress(), 5001, "29998494", 34645);
 			transmissorSocketProcessors.add(t4);
