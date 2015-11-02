@@ -74,7 +74,7 @@ public class TransmissorSocketProcessor implements Runnable {
 	/**
 	 * Total de GB Enviados.
 	 */
-	private double totalPackeSentGB;
+	private double totalPacketSentGB;
 	
 	/**
 	 *  Construtor Padrao.
@@ -121,8 +121,8 @@ public class TransmissorSocketProcessor implements Runnable {
 	 */
 	private void updateStatistics(Packet packet) {
 		setTotalPacketSent(getTotalPacketSent() + 1);
-		setTotalPackeSentGB(getTotalPackeSentGB() + ((packet.getContent().length/1024)/1024)); //TODO: Verificar conta.
-		LOG.debug(String.format("Enviados %d pacotes totalizando %fGB de dados enviados pela interface %s.", getTotalPacketSent(), getTotalPackeSentGB(), getInetAddress().getAddress().toString()));
+		setTotalPacketSentGB(getTotalPacketSentGB() + ((packet.getContent().length/1024)/1024)); //TODO: Verificar conta.
+		LOG.debug(String.format("Enviados %d pacotes totalizando %fGB de dados enviados pela interface %s.", getTotalPacketSent(), getTotalPacketSentGB(), getInetAddress().getAddress().toString()));
 	}
 	
 	/**
@@ -245,12 +245,12 @@ public class TransmissorSocketProcessor implements Runnable {
 		this.totalPacketSent = totalPacketSent;
 	}
 
-	public double getTotalPackeSentGB() {
-		return totalPackeSentGB;
+	public double getTotalPacketSentGB() {
+		return totalPacketSentGB;
 	}
 
-	public void setTotalPackeSentGB(double totalPackeSentGB) {
-		this.totalPackeSentGB = totalPackeSentGB;
+	public void setTotalPacketSentGB(double totalPacketSentGB) {
+		this.totalPacketSentGB = totalPacketSentGB;
 	}
 
 }

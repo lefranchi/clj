@@ -1,6 +1,6 @@
 package br.com.ablebit.clj.ui;
 
-import java.net.InetAddress;
+import br.com.ablebit.clj.net.TransmissorSocketProcessor;
 
 /**
  *
@@ -10,14 +10,10 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
 	
 	private static final long serialVersionUID = -6397209139538789206L;
 	
-	private InetAddress inetAddress;
-	private long totalPacketSent;
-	private double totalPacketSentGB;
-
-    public NetworkInterfacePanel(InetAddress inetAddress, long totalPacketSent, double totalPacketSentGB) {
-    	this.inetAddress = inetAddress;
-    	this.totalPacketSent = totalPacketSent;
-    	this.totalPacketSentGB = totalPacketSentGB;
+	private TransmissorSocketProcessor transmissorSocketProcessor;
+	
+    public NetworkInterfacePanel(TransmissorSocketProcessor transmissorSocketProcessor) {
+    	this.transmissorSocketProcessor = transmissorSocketProcessor;
     	
         initComponents();
         
@@ -25,11 +21,15 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
         
     }
     
-    private void loadData() {
-    	jLabel1.setText(this.inetAddress.getHostName());
-    	lblIp.setText(this.inetAddress.getHostAddress());
-    	lblTotalSent.setText(String.valueOf(this.totalPacketSent));
-    	lblTotalSentGB.setText(String.valueOf(this.totalPacketSentGB));
+    public void loadData() {
+    	
+    	jLabel1.setText(getTransmissorSocketProcessor().getInetAddress().getHostName());
+    	lblIp.setText(getTransmissorSocketProcessor().getInetAddress().getHostAddress());
+    	lblTotalSent.setText(String.valueOf(getTransmissorSocketProcessor().getTotalPacketSent()));
+    	lblTotalSentGB.setText(String.valueOf(getTransmissorSocketProcessor().getTotalPacketSentGB()));
+    	
+    	validate();
+    	
     }
 
     private void initComponents() {
@@ -97,15 +97,15 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
                     .addComponent(lblTotalSentGB))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-    }// </editor-fold>                        
+    }     
 
 
-    public InetAddress getInetAddress() {
-		return inetAddress;
+	public TransmissorSocketProcessor getTransmissorSocketProcessor() {
+		return transmissorSocketProcessor;
 	}
 
-	public void setInetAddress(InetAddress inetAddress) {
-		this.inetAddress = inetAddress;
+	public void setTransmissorSocketProcessor(TransmissorSocketProcessor transmissorSocketProcessor) {
+		this.transmissorSocketProcessor = transmissorSocketProcessor;
 	}
 
 
