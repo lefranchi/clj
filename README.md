@@ -9,7 +9,9 @@ Este projeto tem como objetivo transmitir mídia via rede. A transmissão é fei
 * JSInfo: Aplicativo de áudio para testes;
 * DataLineTester: Verifica DataLines disponíveis no equipamento;
 * RmsVolumeTester: Testa volume de entrada;
-* PPPManager: Gerenciador de conexão/desconexão de modem via ppp.
+* PPPManager: Gerenciador de conexão/desconexão de modem via ppp;
+* PppInitializer: Executa auto conex�o ppp;
+* PppDbUpdate: Autalizador automatico de informa��es para conex�o ppp.
 
 ### Scripts ###
 
