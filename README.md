@@ -20,4 +20,5 @@ Este projeto tem como objetivo transmitir mídia via rede. A transmissão é fei
 * depInstall.sh: instala dependências maven não contidas no reportório central;
 * install.sh: compila e instala todos artefatos do sistema;
 * kill.sh: finaliza execução de todos programas do sistema;
-* uninstall.sh: remove todo o sistema.
+* uninstall.sh: remove todo o sistema;
+* java-run-as-root.sh: executa o java em modo root.
