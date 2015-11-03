@@ -84,6 +84,8 @@ public class CLJDashboardFrame extends JFrame {
 			remove(c);
 			
 		}
+		
+		validate();
 
 	}
 
