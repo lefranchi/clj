@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -135,6 +136,19 @@ public class CLJDashboardFrame extends JFrame {
 			
 			transmissorSocketProcessors.remove(0);
 			
+
+			for (int i = 0; i<10; i++) {
+				
+				Random r = new Random();
+				int Low = 10;
+				int High = 100;
+				int R = r.nextInt(High-Low) + Low;
+				
+				t1.setBandwidth(R);
+				
+				Thread.sleep(1000);
+				
+			}
 
 		} catch(Exception e) {
 			e.printStackTrace();
