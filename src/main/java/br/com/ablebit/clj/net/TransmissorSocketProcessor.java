@@ -74,9 +74,9 @@ public class TransmissorSocketProcessor implements Runnable {
 	private AtomicLong totalPacketSent = new AtomicLong(0);
 	
 	/**
-	 * Total de GB Enviados.
+	 * Total de Mb Enviados.
 	 */
-	private AtomicFloat totalPacketSentGB = new AtomicFloat(0);
+	private AtomicFloat totalPacketSentMb = new AtomicFloat(0);
 	
 	/**
 	 * Largura da banda. Mbits/s.
@@ -131,12 +131,17 @@ public class TransmissorSocketProcessor implements Runnable {
 	 * 
 	 * @param packet
 	 */
-	private void updateStatistics(Packet packet, long lDelta) {
+	private void updateStatistics(Packet packet, long elapsedTime) {
+		
+		double seconds = (double)elapsedTime / 1000000000.0;
+		double mbperseconds = (packet.getContent().length/1024) / seconds; 
+		setBandwidth(mbperseconds);
+		
 		getTotalPacketSent().set(packet.getCounter());
-		getTotalPacketSentGB().set(getTotalPacketSentGB().get()+(packet.getContent().length/1024));
-		setBandwidth(packet.getContent().length / 1024.0 / 1024.0 * 8.0 / lDelta * 1e-9 );
-		//TODO: NAO ESTA PRINTANDO O BANDWIDTH CORRETAMENTE.
-		LOG.debug(String.format("[%d:pacotes][%2fGB:dados][%.2f:Mbits/s] -> enviados pela interface %s.", getTotalPacketSent().longValue(), getTotalPacketSentGB().floatValue(), getBandwidth(), getInetAddress().getAddress().toString()));
+		
+		getTotalPacketSentMb().set((getTotalPacketSent().get()*packet.getContent().length)/1024);
+		
+		LOG.debug(String.format("[%d:pacotes][%2fMb:dados][%.2f:Mbits/s] -> enviados pela interface %s.", getTotalPacketSent().longValue(), getTotalPacketSentMb().floatValue(), getBandwidth(), getInetAddress().getAddress().toString()));
 	}
 	
 	/**
@@ -259,12 +264,12 @@ public class TransmissorSocketProcessor implements Runnable {
 		this.totalPacketSent = totalPacketSent;
 	}
 
-	public AtomicFloat getTotalPacketSentGB() {
-		return totalPacketSentGB;
+	public AtomicFloat getTotalPacketSentMb() {
+		return totalPacketSentMb;
 	}
 
-	public void setTotalPacketSentGB(AtomicFloat totalPacketSentGB) {
-		this.totalPacketSentGB = totalPacketSentGB;
+	public void setTotalPacketSentMb(AtomicFloat totalPacketSentMb) {
+		this.totalPacketSentMb = totalPacketSentMb;
 	}
 
 	public double getBandwidth() {

@@ -30,10 +30,8 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
     	
     	lblIp.setText(getTransmissorSocketProcessor().getInetAddress().getHostAddress());
     	lblTotalSent.setText(String.valueOf(getTransmissorSocketProcessor().getTotalPacketSent()));
-    	lblTotalSentGB.setText(String.format("%.2f", getTransmissorSocketProcessor().getTotalPacketSentGB().get()));
-    	
-    	//TODO: FORMATAR O VALOR DO BANDWIDTH.
-    	lblBandwidth.setText(String.valueOf(getTransmissorSocketProcessor().getBandwidth()));
+    	lblTotalSentMb.setText(String.format("%.2f", getTransmissorSocketProcessor().getTotalPacketSentMb().get()));
+    	lblBandwidth.setText(String.format("%.2f Mbps",getTransmissorSocketProcessor().getBandwidth()));
     	
     	validate();
     	
@@ -47,14 +45,14 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         lblIp = new javax.swing.JLabel();
         lblTotalSent = new javax.swing.JLabel();
-        lblTotalSentGB = new javax.swing.JLabel();
+        lblTotalSentMb = new javax.swing.JLabel();
         lblBandwidth = new javax.swing.JLabel();
 
         jLabel2.setText("IP: ");
 
         jLabel3.setText("Enviados:");
 
-        jLabel4.setText("Enviados (GBs):");
+        jLabel4.setText("Enviados (Mb):");
         
         jLabel5.setText("Bandwidth:");
 
@@ -62,7 +60,7 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
 
         lblTotalSent.setText("NNNNNNNNNNN");
 
-        lblTotalSentGB.setText("NNNGB");
+        lblTotalSentMb.setText("NNNMb");
         
         lblBandwidth.setText("NNN.NN");
 
@@ -83,7 +81,7 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblIp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblTotalSent, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                            .addComponent(lblTotalSentGB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                            .addComponent(lblTotalSentMb, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                 			.addComponent(lblBandwidth, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -102,7 +100,7 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(lblTotalSentGB))
+                    .addComponent(lblTotalSentMb))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
@@ -128,7 +126,7 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lblIp;
     private javax.swing.JLabel lblTotalSent;
-    private javax.swing.JLabel lblTotalSentGB;
+    private javax.swing.JLabel lblTotalSentMb;
     private javax.swing.JLabel lblBandwidth;
     // End of variables declaration                   
 }
