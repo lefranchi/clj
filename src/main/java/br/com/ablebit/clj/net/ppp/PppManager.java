@@ -44,7 +44,6 @@ public class PppManager {
 	
 
 	public static void main(String[] args) {
-
 		
 		LOG.info("Inicializando Conector PPP...");
 
@@ -58,34 +57,26 @@ public class PppManager {
 		
 		LOG.info(String.format("Executando %s em %s.", action, deviceName));
 
-		LOG.debug("Carregando templates pppd[chatscripts]...");
 		try {
 			loadChatScriptsTemplate();
 		} catch(Exception e) {
 			LOG.fatal("Impossivel carregar templates[chatscripts]! Enviando sinal de encerramento!", e);
 			System.exit(-1);
 		}
-		LOG.info("Templates pppd[chatscripts] carregados!");
 
-
-		LOG.debug("Carregando templates pppd[peers]...");
 		try {
 			loadPeersTemplate();
 		} catch(Exception e) {
 			LOG.fatal("Impossivel carregar templates[peers]! Enviando sinal de encerramento!", e);
 			System.exit(-1);
 		}
-		LOG.info("Templates pppd[peers] carregados!");
 
-		LOG.debug("Carregando base de dados de IMSI...");
 		try {
 			loadImsiDb();
 		} catch (IOException e) {
 			LOG.fatal("Impossivel carregar Base de Dados de IMSI! Enviando sinal de encerramento!", e);
 			System.exit(-1);
 		}
-		LOG.info("Base de Dados de IMSI carregados!");
-
 		
 		connectNewDevice(deviceName);
 		
