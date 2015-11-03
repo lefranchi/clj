@@ -10,7 +10,7 @@ Este projeto tem como objetivo transmitir m√≠dia via rede. A transmiss√£o √© fei
 * DataLineTester: Verifica DataLines dispon√≠veis no equipamento;
 * RmsVolumeTester: Testa volume de entrada;
 * PPPManager: Gerenciador de conex√£o/desconex√£o de modem via ppp;
-* PppInitializer: Executa auto conex„o ppp;
+* PppInitializer: Configura ambiente geral para conexıes ppp;
 * PppDbUpdate: Autalizador automatico de informaÁıes para conex„o ppp.
 
 ### Scripts ###
