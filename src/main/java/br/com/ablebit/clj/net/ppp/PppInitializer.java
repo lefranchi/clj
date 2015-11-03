@@ -43,18 +43,14 @@ public class PppInitializer {
 		
 		LOG.info("Inicializando Inicializador PPP...");
 		
-		LOG.debug("Carregando arquivos de propriedades das operadoras...");
 		loadCarrierProperties();
-		LOG.info("Arquivos de propriedades das operadoras carregados!");
 
-		LOG.debug("Criando arquivo de senhas...");
 		try {
 			generateSecretFiles();
 		} catch(IOException e) {
-			LOG.fatal("Impossivel criar arquivos de senhas! Enviando sinal de encerramento!", e);
+			LOG.fatal("Impossivel criar arquivos de senhas!", e);
 			System.exit(-1);
 		}
-		LOG.info("Arquivos de senhas criados!");
 
 		LOG.info("Inicializador PPP inicializado com sucesso.");
 		
