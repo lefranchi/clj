@@ -115,7 +115,7 @@ public class PppInitializer {
 		Path path = FileSystems.getDefault().getPath("/etc/ppp/", "pap-secrets");
 		Files.write( path, sb.toString().getBytes(), StandardOpenOption.CREATE);
 		
-		LOG.debug("Template pap-secretes carregado em memoria!");
+		LOG.debug("Template pap-secretes salvo!");
 
 	}
 
