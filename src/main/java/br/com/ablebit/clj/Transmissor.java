@@ -1,6 +1,8 @@
 package br.com.ablebit.clj;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -8,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -165,7 +168,6 @@ public class Transmissor {
 			
 			Optional<TransmissorSocketProcessor> optional = transmissorSocketProcessors.stream().filter(i -> i.getInetAddress().equals(address)).findFirst();
 			
-			//Verifica se ja existe no array
 			if (optional.isPresent()) {
 				
 				transmissorSocketProcessor = optional.get();
@@ -189,6 +191,18 @@ public class Transmissor {
 			
 			LOG.info(String.format("Interface carregada e operando em modo de transmissão[%s]. ", transmissorSocketProcessor));
 
+		}
+		
+		LOG.debug("Verificando enderecos que foram removidos...");
+		
+		for(TransmissorSocketProcessor transmissorSocketProcessor : new ArrayList<>(transmissorSocketProcessors.stream().filter(i -> !addresses.contains(i.getInetAddress())).collect(Collectors.toList()))) {
+			try {
+				transmissorSocketProcessor.disconnect();
+			} catch (IOException e) {
+				LOG.error(String.format("Erro na desconexao de interfaces nao existentes [%s].", transmissorSocketProcessor));
+			}
+			transmissorSocketProcessors.remove(transmissorSocketProcessor);
+			LOG.info(String.format("Interface removida da transmissão[%s]. ", transmissorSocketProcessor));
 		}
 		
 		LOG.info(String.format("Sockets[total:%d] para transmissao carregados com sucesso.", transmissorSocketProcessors.size()));
