@@ -42,6 +42,11 @@ public class NetworkInterfacePanel extends javax.swing.JPanel {
     	lblTotalSentMb.setText(String.format("%.2f", getTransmissorSocketProcessor().getTotalPacketSentMb().get()));
     	lblBandwidth.setText(String.format("%.2f Mbps",getTransmissorSocketProcessor().getBandwidth()));
     	
+    	if(getTransmissorSocketProcessor().getConnected().get())
+    		setBackground(new java.awt.Color(204, 255, 204));
+    	else
+    		setBackground(new java.awt.Color(255,204,204));
+    	
     }
 
     private void initComponents() {
