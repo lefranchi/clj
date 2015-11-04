@@ -121,6 +121,7 @@ public class TransmissorSocketProcessor implements Runnable {
 			}
 
 		} catch(Exception e) {
+			getConnected().set(false);
 			LOG.error(String.format("Falha no socket transmissor[%s].", this), e);
 		}
 		

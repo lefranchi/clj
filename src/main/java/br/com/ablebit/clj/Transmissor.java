@@ -2,9 +2,12 @@ package br.com.ablebit.clj;
 
 import java.net.InetAddress;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -28,9 +31,19 @@ public class Transmissor {
 	private static final Logger LOG = Logger.getLogger(Transmissor.class);
 
 	/**
+	 * Configurações Gerais.
+	 */
+	private static Configuration configuration;
+	
+	/**
 	 * Executor de processos.
 	 */
 	private static ExecutorService servicesExecutorService;
+	
+	/**
+	 * Executor de carga dos sockets
+	 */
+	private static ScheduledExecutorService scheduledSocketExecutorService;
 	
 	/**
 	 * Executor para leitura de sockets (NoBlocking IO).
@@ -58,6 +71,9 @@ public class Transmissor {
 						transmissorSocketProcessor.disconnect();
 					}
 
+					if(scheduledSocketExecutorService!=null)
+						scheduledSocketExecutorService.shutdownNow();
+
 					if(socketExecutorService!=null)
 						socketExecutorService.shutdownNow();
 					
@@ -73,7 +89,6 @@ public class Transmissor {
 			}
 		});
 
-		Configuration configuration = null;
 		try {
 			configuration = ConfigurationLoader.loadConfiguration();
 		} catch (Exception e) {
@@ -99,16 +114,27 @@ public class Transmissor {
 			System.exit(-1);
 		}
 		
-		List<InetAddress> addresses = null;
-		try {
-			addresses = loadLocalInterfaces();
-		} catch (Exception e) {
-			LOG.fatal("Erro no carregamento das interfaces locais.", e);
-			System.exit(-1);
-		}
+		scheduledSocketExecutorService = Executors.newSingleThreadScheduledExecutor();
 		
-		loadSockets(configuration, repository, addresses);
+		scheduledSocketExecutorService.scheduleWithFixedDelay(new Runnable() {
+			
+			@Override
+			public void run() {
 
+				List<InetAddress> addresses = null;
+				try {
+					addresses = loadLocalInterfaces();
+				} catch (Exception e) {
+					LOG.fatal("Erro no carregamento das interfaces locais.", e);
+					System.exit(-1);
+				}
+				
+				loadSockets(configuration, repository, addresses);
+
+			}
+			
+		}, 0, 10, TimeUnit.SECONDS);
+		
 	}
 
 	private static void createPacketTransmissionInit(Repository<Packet> repository) {
@@ -135,17 +161,37 @@ public class Transmissor {
 		
 		for(InetAddress address : addresses) {
 			
-			TransmissorSocketProcessor transmissorSocketProcessor = new TransmissorSocketProcessor(repository, address, localPort++, remoteReceptorIp, remoteReceptorPort);
+			TransmissorSocketProcessor transmissorSocketProcessor = null;
+			
+			Optional<TransmissorSocketProcessor> optional = transmissorSocketProcessors.stream().filter(i -> i.getInetAddress().equals(address)).findFirst();
+			
+			//Verifica se ja existe no array
+			if (optional.isPresent()) {
+				
+				transmissorSocketProcessor = optional.get();
+				
+				if (transmissorSocketProcessor.getConnected().get()) {
+					LOG.debug(String.format("Socket[%s] já conectado, continuando...", transmissorSocketProcessor));
+					continue;
+				} else {
+					//TODO: Verificar como cancelar a execução e se é necessária.
+					//transmissorSocketProcessor.disconnect();
+					transmissorSocketProcessors.remove(transmissorSocketProcessor);
+				}
+				
+			} 
+			
+			transmissorSocketProcessor = new TransmissorSocketProcessor(repository, address, localPort++, remoteReceptorIp, remoteReceptorPort);
 			
 			transmissorSocketProcessors.add(transmissorSocketProcessor);
 			
 			socketExecutorService.submit(transmissorSocketProcessor);
-		
+			
 			LOG.info(String.format("Interface carregada e operando em modo de transmissão[%s]. ", transmissorSocketProcessor));
-		
+
 		}
 		
-		LOG.info(String.format("Sockets[total:%d] para transmissao carregados com sucesso.", addresses.size()));
+		LOG.info(String.format("Sockets[total:%d] para transmissao carregados com sucesso.", transmissorSocketProcessors.size()));
 		
 	}
 
