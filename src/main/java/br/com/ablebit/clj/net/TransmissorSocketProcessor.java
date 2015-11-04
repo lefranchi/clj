@@ -66,7 +66,7 @@ public class TransmissorSocketProcessor implements Runnable {
 	/**
 	 * Controle de desconexão.
 	 */
-	private transient AtomicBoolean disconnect;
+	private transient AtomicBoolean connected;
 	
 	/**
 	 * Total de Pacotes Enviados.
@@ -93,7 +93,7 @@ public class TransmissorSocketProcessor implements Runnable {
 		this.remoteReceptorIp = remoteReceptorIp;
 		this.remoteReceptorPort = remoteReceptorPort;
 		
-		disconnect = new AtomicBoolean(false);
+		setConnected(new AtomicBoolean(false));
 		
 	}
 
@@ -107,7 +107,7 @@ public class TransmissorSocketProcessor implements Runnable {
 		
 			connect();
 			
-			while (!Thread.currentThread().isInterrupted() && !disconnect.get()) {
+			while (!Thread.currentThread().isInterrupted() && getConnected().get()) {
 				
 				Packet packet = repository.take();
 				
@@ -166,6 +166,8 @@ public class TransmissorSocketProcessor implements Runnable {
 			
 			this.socketOut = new ObjectOutputStream(getSocket().getOutputStream());
 			
+			getConnected().set(true);
+			
 		} catch(Exception e) {
 			LOG.error("Erro conectando socket.", e);
 		}
@@ -178,8 +180,8 @@ public class TransmissorSocketProcessor implements Runnable {
 	 */
 	public void disconnect() throws IOException {
 		
-		if(disconnect!=null)
-			disconnect.set(true);
+		if(getConnected()!=null)
+			getConnected().set(false);
 		
 		if(this.getSocket()!=null) {
 			this.getSocket().shutdownInput();
@@ -278,6 +280,14 @@ public class TransmissorSocketProcessor implements Runnable {
 
 	public void setBandwidth(double bandwidth) {
 		this.bandwidth = bandwidth;
+	}
+
+	public AtomicBoolean getConnected() {
+		return connected;
+	}
+
+	public void setConnected(AtomicBoolean connected) {
+		this.connected = connected;
 	}
 
 }
