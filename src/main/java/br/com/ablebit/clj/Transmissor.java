@@ -96,7 +96,7 @@ public class Transmissor {
 			System.exit(-1);
 		}
 		
-		servicesExecutorService = Executors.newFixedThreadPool(2);
+		servicesExecutorService = Executors.newFixedThreadPool(2, new NamedThreadFactory("transmissor-services"));
 		
 		transmissorSocketProcessors = new CopyOnWriteArrayList<>();
 		
@@ -114,7 +114,9 @@ public class Transmissor {
 			System.exit(-1);
 		}
 		
-		scheduledSocketExecutorService = Executors.newSingleThreadScheduledExecutor();
+		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("transmissor-socket"));
+		
+		scheduledSocketExecutorService = Executors.newSingleThreadScheduledExecutor(new NamedThreadFactory("transmissor-socket-scheduled"));
 		
 		scheduledSocketExecutorService.scheduleWithFixedDelay(new Runnable() {
 			
@@ -152,8 +154,6 @@ public class Transmissor {
 		
 		LOG.info("Carregando sockets para transmissao...");
 		
-		socketExecutorService = Executors.newCachedThreadPool(new NamedThreadFactory("transmissor-socket"));
-
 		String remoteReceptorIp = configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_REMOTE_RECEPTOR_IP);
 		int remoteReceptorPort = Integer.parseInt(configuration.getConfiguration(ConfigurationProperty.TRANSMISSOR_REMOTE_RECEPTOR_PORT));
 
