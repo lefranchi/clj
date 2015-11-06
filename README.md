@@ -25,6 +25,7 @@ Este projeto tem como objetivo transmitir mĂ­dia via rede. A transmissĂŁo Ă
 
 ### Raspberry Pi - Setup ###
 * Wifi: /etc/network/interfaces
+* * *
 auto lo
 iface lo inet loopback
 
@@ -38,9 +39,5 @@ auto wlan0
 iface wlan0 inet dhcp
 	wpa-ssid "xxxxxx"
 	wpa-psk "xxxxxxxxx"
-
+* * *
 * apt-get install maven
-
-
-
-
