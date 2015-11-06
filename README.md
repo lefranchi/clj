@@ -43,7 +43,7 @@ iface wlan0 inet dhcp
 	wpa-psk "xxxxxxxxx"
 
 ```
-sudo apt-get install iptraf;
-* apt-get install maven;
+* sudo apt-get install iptraf;
+* sudo apt-get install maven;
 * git clone;
 * sudo ./scripts/install.sh;
