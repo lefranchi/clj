@@ -24,8 +24,10 @@ Este projeto tem como objetivo transmitir mĂ­dia via rede. A transmissĂŁo Ă
 * java-run-as-root.sh: executa o java em modo root.
 
 ### Raspberry Pi - Setup ###
+* Work Directory: mkdir -p /home/pi/work/workspaces/ablebit
 * Wifi: /etc/network/interfaces
-* * *
+```
+#!shell
 auto lo
 iface lo inet loopback
 
@@ -39,5 +41,6 @@ auto wlan0
 iface wlan0 inet dhcp
 	wpa-ssid "xxxxxx"
 	wpa-psk "xxxxxxxxx"
-* * *
+
+```
 * apt-get install maven
