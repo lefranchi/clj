@@ -1,9 +1,9 @@
 #!/bin/bash
 # file:  /usr/lib/jvm/java-6-openjdk/jre/bin/java
-# descr: Starter for jdk. Runs jdk as root when 
+# descr: Starter for jdk. Runs jdk as root when
 #        cmd-line-arg "--run-as-root" is specified.
 #
-jre="/usr/lib/jvm/java-6-openjdk/jre/bin/java.ori"
+jre="java_ori"
 run_as_root=false
 args=
 

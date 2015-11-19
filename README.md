@@ -15,13 +15,16 @@ Este projeto tem como objetivo transmitir mĂ­dia via rede. A transmissĂŁo Ă
 
 ### Scripts ###
 
+Sempre executar do diretorio rais do clj: ./scripts/install.sh
+
 * udev/10-clj.rules: udev para acionar o programa gerenciador de conexĂŁo/desconexĂŁo;
 * udev/clj-ppp.sh: shell que executa o programa acionado pelo udev rule;
 * depInstall.sh: instala dependĂŞncias maven nĂŁo contidas no reportĂłrio central;
 * install.sh: compila e instala todos artefatos do sistema;
 * kill.sh: finaliza execuĂ§ĂŁo de todos programas do sistema;
 * uninstall.sh: remove todo o sistema;
-* java-run-as-root.sh: executa o java em modo root.
+* java-run-as-root.sh: executa o java em modo root;
+* java-install.sh: instala o java utilizando link simbolico e update-alternatives.
 
 ### Raspberry Pi - Setup ###
 * Work Directory: mkdir -p /home/pi/work/workspaces/ablebit
@@ -43,11 +46,13 @@ iface wlan0 inet dhcp
 	wpa-psk "xxxxxxxxx"
 
 ```
-* sudo cp ./files/linux/keyboard /etc/default/
+* sudo cp ./files/linux/keyboard /etc/default/;
 * sudo service networking reload;
-* sudo cp /usr/share/zoneinfo/Brazil/East /etc/localtime
-* sudo apt-get install ntpdate 
+* sudo apt-get update;
+* sudo apt-get upgrade;
+* sudo cp /usr/share/zoneinfo/Brazil/East /etc/localtime;
+* sudo apt-get install ntpdate;
 * sudo apt-get install iptraf;
 * sudo apt-get install maven;
-* git clone;
+* git clone XXXXX;
 * sudo ./scripts/install.sh;
