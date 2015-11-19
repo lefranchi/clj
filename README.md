@@ -45,6 +45,8 @@ iface wlan0 inet dhcp
 ```
 * sudo cp ./files/linux/keyboard /etc/default/
 * sudo service networking reload;
+* sudo cp /usr/share/zoneinfo/Brazil/East /etc/localtime
+* sudo apt-get install ntpdate 
 * sudo apt-get install iptraf;
 * sudo apt-get install maven;
 * git clone;
