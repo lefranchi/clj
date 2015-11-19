@@ -1,15 +1,15 @@
 # Chico Leandro Java #
 
-Este projeto tem como objetivo transmitir mĂ­dia via rede. A transmissĂŁo ĂŠ feita por todos meios de rede disponĂ­veis efetuando balanceamento de carga e tolerĂ˘ncia a falhas entre eles.
+Este projeto tem como objetivo transmitir mídia via rede. A transmissão é feita por todos meios de rede disponíveis efetuando balanceamento de carga e tolerância a falhas entre eles.
 
 ### Artefatos ###
 
 * Receptor: Recebe dados;
 * Transmissor: Envia dados;
-* JSInfo: Aplicativo de ĂĄudio para testes;
-* DataLineTester: Verifica DataLines disponĂ­veis no equipamento;
+* JSInfo: Aplicativo de Audio para testes;
+* DataLineTester: Verifica DataLines disponí­veis no equipamento;
 * RmsVolumeTester: Testa volume de entrada;
-* PPPManager: Gerenciador de conexĂŁo/desconexĂŁo de modem via ppp;
+* PPPManager: Gerenciador de conexão/desconexão de modem via ppp;
 * PppInitializer: Configura ambiente geral para conexőes ppp;
 * PppDbUpdate: Autalizador automatico de informaçőes para conexăo ppp.
 
@@ -17,11 +17,11 @@ Este projeto tem como objetivo transmitir mĂ­dia via rede. A transmissĂŁo Ă
 
 Sempre executar do diretorio rais do clj: ./scripts/install.sh
 
-* udev/10-clj.rules: udev para acionar o programa gerenciador de conexĂŁo/desconexĂŁo;
+* udev/10-clj.rules: udev para acionar o programa gerenciador de conexão/desconexão;
 * udev/clj-ppp.sh: shell que executa o programa acionado pelo udev rule;
-* depInstall.sh: instala dependĂŞncias maven nĂŁo contidas no reportĂłrio central;
+* depInstall.sh: instala dependências maven não contidas no repositório central;
 * install.sh: compila e instala todos artefatos do sistema;
-* kill.sh: finaliza execuĂ§ĂŁo de todos programas do sistema;
+* kill.sh: finaliza execução de todos programas do sistema;
 * uninstall.sh: remove todo o sistema;
 * java-run-as-root.sh: executa o java em modo root;
 * java-install.sh: instala o java utilizando link simbolico e update-alternatives.
