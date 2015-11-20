@@ -88,7 +88,8 @@
         					<copyConfigurationDirectory>true</copyConfigurationDirectory>
         					<configurationDirectory>conf</configurationDirectory>
         					<logsDirectory>logs</logsDirectory>
-        					<extraJvmArguments>-server -Djava.net.preferIPv4Stack=true -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044</extraJvmArguments>
+        					<!-- <extraJvmArguments>-server -Djava.net.preferIPv4Stack=true -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=1044</extraJvmArguments> -->
+        					<extraJvmArguments>-server -Djava.net.preferIPv4Stack=true</extraJvmArguments>
 							<programs>
 								<program>
 									<id>receptor</id>
