@@ -6,11 +6,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
-		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.8</jdk.version>
 		<log4j.version>1.2.17</log4j.version>
 		<commons-lang.version>2.6</commons-lang.version>
-		<jfreechart.version>1.0.19</jfreechart.version>
+		<commons-cli.version>1.3.1</commons-cli.version>	
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 	</properties>
 
@@ -32,10 +32,10 @@
 			<version>${commons-lang.version}</version>
 		</dependency>		
 		<dependency>
-			<groupId>org.jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-			<version>${jfreechart.version}</version>
-		</dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>${commons-cli.version}</version>
+		</dependency>		
 	</dependencies>
 
 	<build>
@@ -109,6 +109,10 @@
 								<program>
 									<id>rmsVolumeTester</id>
 									<mainClass>br.com.ablebit.clj.audio.RmsVolumeTester</mainClass>
+								</program>
+								<program>
+									<id>audioRecorder</id>
+									<mainClass>br.com.ablebit.clj.audio.AudioRecorder</mainClass>
 								</program>
 								<program>
 									<id>pppManager</id>

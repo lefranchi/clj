@@ -9,6 +9,7 @@ Este projeto tem como objetivo transmitir mídia via rede. A transmissão é fei
 * JSInfo: Aplicativo de Audio para testes;
 * DataLineTester: Verifica DataLines disponí­veis no equipamento;
 * RmsVolumeTester: Testa volume de entrada;
+* AudioRecorder: Captura audio do target configurado e salva em arquivo wav;
 * PPPManager: Gerenciador de conexão/desconexão de modem via ppp;
 * PppInitializer: Configura ambiente geral para conexőes ppp;
 * PppDbUpdate: Autalizador automatico de informaçőes para conexăo ppp.
