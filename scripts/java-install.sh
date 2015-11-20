@@ -18,11 +18,15 @@ echo "Criando Diretorio JDK..."
 mkdir -p $JDK_PATH
 
 echo "Fazendo download do JDK..."
-wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u65-b17/jdk-8u65-linux-x64.tar.gz
+#TAR_FILE="jdk-8u65-linux-x64.tar.gz"
+#TAR_FILE="jdk-8u65-linux-arm64-vfp-hflt.tar.gz"
+TAR_FILE="jdk-8u65-linux-arm32-vfp-hflt.tar.gz"
+wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u65-b17/$TAR_FILE
+
 
 echo "Descompactando arquivo do JDK..."
-tar -zxvf jdk-8u65-linux-x64.tar.gz -C $JDK_PATH/
-rm -f jdk-8u65-linux-x64.tar.gz
+tar -zxvf $TAR_FILE -C $JDK_PATH/
+rm -f $TAR_FILE
 
 echo "Criando link para o JDK..."
 ln -s $JDK_PATH/jdk1.8.0_65/ $JDK_PATH/jdk-default
