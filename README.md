@@ -52,8 +52,6 @@ iface wlan0 inet dhcp
 * sudo apt-get update;
 * sudo apt-get upgrade;
 * sudo cp /usr/share/zoneinfo/Brazil/East /etc/localtime;
-* sudo apt-get install ntpdate;
-* sudo apt-get install iptraf;
-* sudo apt-get install maven;
+* sudo apt-get install ntpdate iptraf openjdk-8-jdk maven;
 * git clone XXXXX;
 * sudo ./scripts/install.sh;
